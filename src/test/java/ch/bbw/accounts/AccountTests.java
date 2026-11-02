@@ -1,6 +1,9 @@
 package ch.bbw.accounts;
 
 
+import ch.bbw.Scheduled;
+import ch.bbw.exceptions.InvalidAmountException;
+import ch.bbw.exceptions.InvalidDateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,23 +18,15 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @version 2.0
  */
 public class AccountTests {
-    private Account account;
-
-    public void setUp() {
-        account = new SavingsAccount("1234567890");
-
-    }
-
     /**
      * Tested die Initialisierung eines Kontos.
      */
     @Test
     @DisplayName("Simple constructor-Test for SavingsAccount should work")
     public void testInit() {
-       // simple constructor test for SavingsAccount
-        account = new SavingsAccount("1234567890");
-        assertEquals("1234567890", account.getId());
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
 
+        assertEquals("CH-01", sav1.getId());
     }
 
     /**
@@ -39,8 +34,11 @@ public class AccountTests {
      */
     @Test
     @DisplayName("Simple deposit on SavingsAccount should work")
-    public void testDeposit() {
-        fail("ToDo");
+    public void testDeposit() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+
+        sav1.deposit(Scheduled.now(), 15);
+        assertEquals(15, sav1.getBalance());
     }
 
     /**
@@ -48,8 +46,11 @@ public class AccountTests {
      */
     @Test
     @DisplayName("Simple withdraw from SalaryAccount should work")
-    public void testWithdraw() {
-        fail("ToDo");
+    public void testWithdraw() throws  InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 15);
+        sav1.withdraw(Scheduled.now(), 13);
+        assertEquals(2, sav1.getBalance());
     }
 
     @Test
@@ -69,8 +70,11 @@ public class AccountTests {
      */
     @Test
     @DisplayName("Not a real test, it prints a list of bookings")
-    public void testPrint() {
-        fail("ToDo");
+    public void testPrint() throws  InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 15);
+        sav1.withdraw(Scheduled.now(), 13);
+        System.out.println("Your balance is:" + sav1.getBalance());
     }
 
     /**
@@ -78,8 +82,11 @@ public class AccountTests {
      */
     @Test
     @DisplayName("Not a real test, it prints a list of bookings")
-    public void testMonthlyPrint() {
-        fail("ToDo");
+    public void testMonthlyPrint() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 15);
+        sav1.withdraw(Scheduled.now(), 13);
+        System.out.println("Your monthly balance is:" + sav1.getBalance());
     }
 
 }

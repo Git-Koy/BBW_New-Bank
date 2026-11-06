@@ -72,9 +72,10 @@ public abstract class Account {
      *
      * @param date   the transaction date
      * @param amount the amount to deposit
+     * @param text the transaction text
      * @return the new balance of the account
      */
-    public long deposit(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
+    public long deposit(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
         if (amount <= 0)
             throw new InvalidAmountException("amount must be greater than 0");
 
@@ -82,7 +83,7 @@ public abstract class Account {
             throw new InvalidDateException("date mustn't be in the past");
 
         balance += amount;
-        bookings.add(new Booking(date.toUnix(), amount));
+        bookings.add(new Booking(date.toUnix(), amount, text));
 
         return balance;
     }
@@ -92,11 +93,12 @@ public abstract class Account {
      *
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
+     * @param text der Transaktionstext
      * @return boolean <code>true</code>, falls die
      * Abhebung erfolgreich war, andernfalls (z.B.
      * bei negativem Betrag) <code>false</code>.
      */
-    public long withdraw(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
+    public long withdraw(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
         if (amount <= 0)
             throw new InvalidAmountException("amount must be greater than 0");
 
@@ -105,7 +107,7 @@ public abstract class Account {
 
         balance -= amount;
         // Achtung: hier Buchung mit negativem Betrag!
-        bookings.add(new Booking(date.toUnix(), -amount));
+        bookings.add(new Booking(date.toUnix(), -amount, text));
 
         return balance;
     }

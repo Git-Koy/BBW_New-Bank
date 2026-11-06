@@ -26,8 +26,9 @@ public class BookingTests
 	{
 		long date = 20829;
 		long amount = 1500;
+		String text = "This is a test text";
 
-		Booking testBooking = new Booking(date, amount);
+		Booking testBooking = new Booking(date, amount, text);
 
 		assertEquals(date, testBooking.date(), "Date must survive construction");
 		assertEquals(amount, testBooking.amount(), "Amount must survive construction");
@@ -40,7 +41,7 @@ public class BookingTests
 	@DisplayName("Not a real test, it prints a list of bookings")
 	public void testPrint()
 	{
-		List<Booking> bookings = List.of(new Booking(20829, 1500), new Booking(20829, 1500));
+		List<Booking> bookings = List.of(new Booking(20829, 1500, "This is a test text"), new Booking(20829, 1500, "This is a test text"));
 		bookings.forEach(System.out::println);
 
 	}

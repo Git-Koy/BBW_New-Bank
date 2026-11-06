@@ -116,12 +116,13 @@ public class Bank {
      * @param id     die Kontonummer
      * @param date   das Transaktionsdatum
      * @param amount der einzuzahlende Betrag
+     * @param text der Transaktionstext
      */
     public void deposit(String id, Scheduled date,
-                        long amount) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
+                        long amount, String text) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
         var account = getAccount(id);
 
-        account.deposit(date, amount);
+        account.deposit(date, amount, text);
     }
 
     /**
@@ -137,13 +138,14 @@ public class Bank {
      * @param id     die Kontonummer
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
+     * @param text der Transaktionstext
      * @return new balance
      */
     public long withdraw(String id, Scheduled date,
-                            long amount) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
+                            long amount, String text) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
         var account = getAccount(id);
 
-        return account.withdraw(date, amount);
+        return account.withdraw(date, amount, text);
     }
     public List<Account> top5HighestBalances() {
         return accounts.values()

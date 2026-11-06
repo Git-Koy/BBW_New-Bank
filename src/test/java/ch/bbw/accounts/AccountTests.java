@@ -37,7 +37,7 @@ public class AccountTests {
     public void testDeposit() throws InvalidAmountException, InvalidDateException {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
 
-        sav1.deposit(Scheduled.now(), 15);
+        sav1.deposit(Scheduled.now(), 15, "This is a test text");
         assertEquals(15, sav1.getBalance());
     }
 
@@ -48,8 +48,8 @@ public class AccountTests {
     @DisplayName("Simple withdraw from SalaryAccount should work")
     public void testWithdraw() throws  InvalidAmountException, InvalidDateException {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
-        sav1.deposit(Scheduled.now(), 15);
-        sav1.withdraw(Scheduled.now(), 13);
+        sav1.deposit(Scheduled.now(), 15,  "This is a test text");
+        sav1.withdraw(Scheduled.now(), 13,  "This is a test text");
         assertEquals(2, sav1.getBalance());
     }
 
@@ -72,8 +72,8 @@ public class AccountTests {
     @DisplayName("Not a real test, it prints a list of bookings")
     public void testPrint() throws  InvalidAmountException, InvalidDateException {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
-        sav1.deposit(Scheduled.now(), 15);
-        sav1.withdraw(Scheduled.now(), 13);
+        sav1.deposit(Scheduled.now(), 15,   "This is a test text");
+        sav1.withdraw(Scheduled.now(), 13,  "This is a test text");
         System.out.println("Your balance is:" + sav1.getBalance());
     }
 
@@ -84,8 +84,8 @@ public class AccountTests {
     @DisplayName("Not a real test, it prints a list of bookings")
     public void testMonthlyPrint() throws InvalidAmountException, InvalidDateException {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
-        sav1.deposit(Scheduled.now(), 15);
-        sav1.withdraw(Scheduled.now(), 13);
+        sav1.deposit(Scheduled.now(), 15,    "This is a test text");
+        sav1.withdraw(Scheduled.now(), 13, "This is a test text");
         System.out.println("Your monthly balance is:" + sav1.getBalance());
     }
 

@@ -4,7 +4,9 @@ import ch.bbw.Booking;
 import ch.bbw.Scheduled;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
+import ch.bbw.MoneyFormatter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,5 +140,22 @@ public abstract class Account {
      */
     public List<Booking> getBookings() {
         return List.copyOf(bookings);
+    }
+
+    /**
+     * Returns the transactions and balance of an account
+     *
+     * @return formatted string with transaction history and balance
+     */
+    public String printStatement() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#-------------------- Your Account --------------------#").append("\n");
+        for (Booking b : bookings) {
+            sb.append(Instant.ofEpochMilli(b.date())).append(" ").append(MoneyFormatter.toCHF(b.amount())).append(" ").append(b.text()).append("\n");
+        }
+        sb.append("#------------- Your Balance is: ").append(MoneyFormatter.toCHF(getBalance())).append("------------#").append("\n");
+        sb.append("#----------------------------------------------------#");
+
+        return sb.toString();
     }
 }

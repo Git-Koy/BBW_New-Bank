@@ -2,6 +2,7 @@ package ch.bbw.accounts;
 
 
 import ch.bbw.Booking;
+import ch.bbw.MoneyFormatter;
 import ch.bbw.Scheduled;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
@@ -170,5 +171,16 @@ public class AccountTests {
 
         assertThrows(InvalidAmountException.class, () -> sav1.withdraw(Scheduled.now(), 16,  "This is a test text"));
         assertEquals(1, sav1.getBookings().size());
+    }
+
+    /**
+     * Tests if the formating of currency works
+     */
+    @Test
+    @DisplayName("Formatting currency should work")
+    public void testFormatCurrency() throws InvalidAmountException, InvalidDateException {
+        assertEquals("CHF 1.23456", MoneyFormatter.toCHF(123456));
+        assertEquals("CHF 1.00001", MoneyFormatter.toCHF(100001));
+        assertEquals("CHF -1.00001", MoneyFormatter.toCHF(-100001));
     }
 }

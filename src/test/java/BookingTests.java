@@ -1,5 +1,8 @@
 import ch.bbw.Booking;
 import ch.bbw.accounts.Account;
+import ch.bbw.accounts.SavingsAccount;
+import ch.bbw.exceptions.InvalidAmountException;
+import ch.bbw.exceptions.InvalidDateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,5 +47,16 @@ public class BookingTests
 		List<Booking> bookings = List.of(new Booking(20829, 1500, "This is a test text"), new Booking(20829, 1500, "This is a test text"));
 		bookings.forEach(System.out::println);
 
+	}
+
+	/**
+	 * Empty or blank bookings recieve default texts
+	 */
+	@Test
+	@DisplayName("Empty or blank bookings recieving default texts should work")
+	public void testEmptyOrBlankBookings() {
+		assertEquals("Einzahlung", new Booking(20829, 14, "").text());
+		assertEquals("Auszahlung", new Booking(20829, -13, null).text());
+		assertEquals("Einzahlung", new Booking(20829, 12, "    ").text());
 	}
 }

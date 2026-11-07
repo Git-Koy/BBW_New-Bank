@@ -1,14 +1,16 @@
 package ch.bbw.accounts;
 
 
+import ch.bbw.Booking;
 import ch.bbw.Scheduled;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import java.time.temporal.ChronoUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -38,7 +40,11 @@ public class AccountTests {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
 
         sav1.deposit(Scheduled.now(), 15, "This is a test text");
+
         assertEquals(15, sav1.getBalance());
+        assertEquals(1, sav1.getBookings().size());
+        assertTrue(sav1.getBookings().get(0).amount() > 0);
+        assertEquals("This is a test text", sav1.getBookings().get(0).text());
     }
 
     /**
@@ -48,9 +54,12 @@ public class AccountTests {
     @DisplayName("Simple withdraw from SalaryAccount should work")
     public void testWithdraw() throws  InvalidAmountException, InvalidDateException {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
-        sav1.deposit(Scheduled.now(), 15,  "This is a test text");
-        sav1.withdraw(Scheduled.now(), 13,  "This is a test text");
-        assertEquals(2, sav1.getBalance());
+        sav1.withdraw(Scheduled.now(), 1,  "This is a test text");
+
+        assertEquals(-1, sav1.getBalance());
+        assertEquals(1, sav1.getBookings().size());
+        assertTrue(sav1.getBookings().get(0).amount() < 0);
+        assertEquals("This is a test text", sav1.getBookings().get(0).text());
     }
 
     @Test
@@ -89,4 +98,63 @@ public class AccountTests {
         System.out.println("Your monthly balance is:" + sav1.getBalance());
     }
 
+    /**
+     * Tests if a new account has a balance of 0
+     */
+    @Test
+    @DisplayName("Account starting with a balance of 0 should work")
+    public void testAccountStartingWithBalance0() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        assertEquals(0, sav1.getBalance());
+        assertEquals(0, sav1.getBookings().size());
+    }
+
+    /**
+     * Tests if the balance after n operations equals the sum of the booking amounts
+     */
+    @Test
+    @DisplayName("Sum of booking amount equaling sum of operations should work")
+    public void testAccountBookingSumEqualsOperationSum() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 15, "This is a test text");
+        sav1.withdraw(Scheduled.now(), 13,  "This is a test text");
+        sav1.withdraw(Scheduled.now(), 1,  "This is a test text");
+        sav1.deposit(Scheduled.now(), 23,  "This is a test text");
+
+        long sum = 0;
+        for (Booking b : sav1.getBookings()) {
+            sum += b.amount();
+        }
+
+        assertEquals(sum, sav1.getBalance());
+        assertEquals(4, sav1.getBookings().size());
+    }
+
+    /**
+     * Makes sure that getBookings() cannot be used to modify the account
+     */
+    @Test
+    @DisplayName("Account being unable to be edited by getBookings() should work")
+    public void testAccountCannotBeModifiedbyGetBookings() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 15,  "This is a test text");
+
+        assertThrows(UnsupportedOperationException.class, () -> sav1.getBookings().add(new Booking(0, 1, "This is a test text")));
+    }
+
+    /**
+     * A rejected operation should add no booking and leave the balance unchanged
+     */
+    @Test
+    @DisplayName("Rejected operations leaving the balance and bookings unchanged should work")
+    public void testRejectedOperationsLeavingTheBalanceAndBookingsUnchanged() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 15,  "This is a test text");
+
+        assertThrows(InvalidAmountException.class, () -> sav1.deposit(Scheduled.now(), 0,  "This is a test text"));
+        assertThrows(InvalidDateException.class, () -> sav1.deposit(Scheduled.now().minus(2, ChronoUnit.MILLIS), 1,  "This is a test text"));
+        assertEquals(1, sav1.getBookings().size());
+        assertEquals(15, sav1.getBalance());
+
+    }
 }

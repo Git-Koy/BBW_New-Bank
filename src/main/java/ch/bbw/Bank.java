@@ -126,6 +126,27 @@ public class Bank {
     }
 
     /**
+     * Zahlt den gegebenen Betrag auf das Konto mit
+     * der gegebenen Kontonummer ein.
+     *
+     * <p>
+     * Diese Methode kann <code>false</code> zur�ckgeben,
+     * falls das Konto nicht existiert, oder falls die
+     * Einzahlung auf dem Konto nicht funktioniert.
+     * </p>
+     *
+     * @param id     die Kontonummer
+     * @param date   das Transaktionsdatum
+     * @param amount der einzuzahlende Betrag
+     */
+    public void deposit(String id, Scheduled date,
+                        long amount) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
+        var account = getAccount(id);
+
+        account.deposit(date, amount);
+    }
+
+    /**
      * Hebt den gegebenen Betrag vom Konto mit
      * der gegebenen Kontonummer ab.
      *
@@ -146,6 +167,28 @@ public class Bank {
         var account = getAccount(id);
 
         return account.withdraw(date, amount, text);
+    }
+
+    /**
+     * Hebt den gegebenen Betrag vom Konto mit
+     * der gegebenen Kontonummer ab.
+     *
+     * <p>
+     * Diese Methode kann <code>false</code> zur�ckgeben,
+     * falls das Konto nicht existiert, oder falls das
+     * Abheben vom Konto nicht funktioniert.
+     * </p>
+     *
+     * @param id     die Kontonummer
+     * @param date   das Transaktionsdatum
+     * @param amount der abzuhebende Betrag
+     * @return new balance
+     */
+    public long withdraw(String id, Scheduled date,
+                         long amount) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
+        var account = getAccount(id);
+
+        return account.withdraw(date, amount);
     }
     public List<Account> top5HighestBalances() {
         return accounts.values()

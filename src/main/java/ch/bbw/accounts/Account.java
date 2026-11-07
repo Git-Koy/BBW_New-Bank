@@ -89,6 +89,17 @@ public abstract class Account {
     }
 
     /**
+     * Deposits the given amount to the account.
+     *
+     * @param date   the transaction date
+     * @param amount the amount to deposit
+     * @return the new balance of the account
+     */
+    public long deposit(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
+        return deposit(date, amount, null);
+    }
+
+    /**
      * Hebt den gegebenen Betrag vom Konto ab.
      *
      * @param date   das Transaktionsdatum
@@ -110,5 +121,18 @@ public abstract class Account {
         bookings.add(new Booking(date.toUnix(), -amount, text));
 
         return balance;
+    }
+
+    /**
+     * Hebt den gegebenen Betrag vom Konto ab.
+     *
+     * @param date   das Transaktionsdatum
+     * @param amount der abzuhebende Betrag
+     * @return boolean <code>true</code>, falls die
+     * Abhebung erfolgreich war, andernfalls (z.B.
+     * bei negativem Betrag) <code>false</code>.
+     */
+    public long withdraw(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
+        return withdraw(date, amount, null);
     }
 }

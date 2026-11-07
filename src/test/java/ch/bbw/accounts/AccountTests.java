@@ -51,15 +51,16 @@ public class AccountTests {
      * Testet das Abheben von einem Konto.
      */
     @Test
-    @DisplayName("Simple withdraw from SalaryAccount should work")
+    @DisplayName("Simple withdraw from SavingsAccount should work")
     public void testWithdraw() throws  InvalidAmountException, InvalidDateException {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 3, "This is a test text");
         sav1.withdraw(Scheduled.now(), 1,  "This is a test text");
 
-        assertEquals(-1, sav1.getBalance());
-        assertEquals(1, sav1.getBookings().size());
-        assertTrue(sav1.getBookings().get(0).amount() < 0);
-        assertEquals("This is a test text", sav1.getBookings().get(0).text());
+        assertEquals(2, sav1.getBalance());
+        assertEquals(2, sav1.getBookings().size());
+        assertTrue(sav1.getBookings().get(1).amount() < 0);
+        assertEquals("This is a test text", sav1.getBookings().get(1).text());
     }
 
     @Test
@@ -156,5 +157,18 @@ public class AccountTests {
         assertEquals(1, sav1.getBookings().size());
         assertEquals(15, sav1.getBalance());
 
+    }
+
+    /**
+     * Tests if a transaction fails if the amount is greater than the balance of a SavingsAccount
+     */
+    @Test
+    @DisplayName("The amount of a transaction not being allowed to be greater than the balance of a SavingsAccount should work")
+    public void testAmountIsNotGreaterThanTheBalanceOfASavingsAccount() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        sav1.deposit(Scheduled.now(), 15,  "This is a test text");
+
+        assertThrows(InvalidAmountException.class, () -> sav1.withdraw(Scheduled.now(), 16,  "This is a test text"));
+        assertEquals(1, sav1.getBookings().size());
     }
 }

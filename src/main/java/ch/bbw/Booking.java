@@ -3,7 +3,7 @@ package ch.bbw;
 /**
  * Buchung.
  *
- * @param date   Datum der Transaktion (Banktage seit 1.1.1970).
+ * @param date   Datum der Transaktion (Unixzeitstempel in Millisekunden).
  * @param amount Transaktionsbetrag (Millirappen).
  * @param text Transaktionsbeschreibung.
  * @author Luigi Cavuoti, lro@gmx.ch

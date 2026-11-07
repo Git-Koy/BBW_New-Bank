@@ -135,4 +135,13 @@ public abstract class Account {
     public long withdraw(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
         return withdraw(date, amount, null);
     }
+
+    /**
+     * Returns a copy of bookings of an account
+     *
+     * @return a copy of the Bookings
+     */
+    public List<Booking> getBookings() {
+        return List.copyOf(bookings);
+    }
 }

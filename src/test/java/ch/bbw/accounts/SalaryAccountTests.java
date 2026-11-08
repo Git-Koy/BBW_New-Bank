@@ -30,6 +30,9 @@ public class SalaryAccountTests
 	public void testInitialization() throws InvalidDateException, InvalidAmountException {
 		SalaryAccount sal1 = new SalaryAccount("CH-01", -12);
 		sal1.deposit(Scheduled.now(), 13, "This is a test text");
+
+		assertEquals(13, sal1.getBalance());
+		assertEquals(-12, sal1.getCreditLimit());
 	}
 
 	/**
@@ -87,6 +90,17 @@ public class SalaryAccountTests
 	@DisplayName("A positive credit limit will be rejected")
 	public void testRejectPositiveCreditLimit() throws InvalidDateException, InvalidAmountException {
 		assertThrows(IllegalArgumentException.class, () -> {SalaryAccount sal1 = new SalaryAccount("CH-01", 12);});
+	}
+
+	/**
+	 * The account type of a salary account
+	 */
+	@Test
+	@DisplayName("The account type shows up correctly")
+	public void testAccountType() {
+		SalaryAccount sal1 = new SalaryAccount("CH-01", -12);
+
+		assertEquals("Salary Account", sal1.getAccountType());
 	}
 
 

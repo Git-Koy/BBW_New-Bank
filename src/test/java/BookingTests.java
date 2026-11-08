@@ -47,6 +47,47 @@ public class BookingTests
 		List<Booking> bookings = List.of(new Booking(20829, 1500, "This is a test text"), new Booking(20829, 1500, "This is a test text"));
 		bookings.forEach(System.out::println);
 
+		assertEquals(2, bookings.size());
+		assertTrue(bookings.get(0).toString().contains("This is a test text"));
+	}
+
+	/**
+	 * The text of a booking survives the construction
+	 */
+	@Test
+	@DisplayName("The text of a booking surviving construction should work")
+	public void testText()
+	{
+		Booking testBooking = new Booking(20829, 1500, "This is a test text");
+
+		assertEquals("This is a test text", testBooking.text());
+	}
+
+	/**
+	 * A withdrawal is stored as a booking with a negative amount
+	 */
+	@Test
+	@DisplayName("A booking with a negative amount should work")
+	public void testNegativeAmount()
+	{
+		Booking testBooking = new Booking(20829, -1500, "This is a test text");
+
+		assertEquals(-1500, testBooking.amount());
+		assertEquals("This is a test text", testBooking.text());
+	}
+
+	/**
+	 * Two bookings with the same values are equal
+	 */
+	@Test
+	@DisplayName("Two bookings with the same values being equal should work")
+	public void testEquals()
+	{
+		Booking booking1 = new Booking(20829, 1500, "This is a test text");
+		Booking booking2 = new Booking(20829, 1500, "This is a test text");
+
+		assertEquals(booking1, booking2);
+		assertNotEquals(booking1, new Booking(20829, 1501, "This is a test text"));
 	}
 
 	/**

@@ -57,12 +57,30 @@ public class BankSingletonTests {
     @Test
     @DisplayName("A bank from the constructor being independent from the singleton should work")
     public void testConstructedBankIsIndependent() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank(new AccountFactory());
+        Bank bank = new Bank(new AccountFactory(900_000));
         String sav1 = bank.createSavingsAccount();
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
 
         assertNotSame(Bank.getInstance(), bank);
         assertEquals(15, bank.getBalance());
         assertThrows(InvalidAmountException.class, () -> {Bank.getInstance().getAccount(sav1);});
+    }
+
+    /**
+     * reset() removes all accounts from the singleton bank
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
+    @Test
+    @DisplayName("reset() emptying the bank should work")
+    public void testReset() throws InvalidDateException, InvalidAmountException {
+        Bank bank = Bank.getInstance();
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
+
+        Bank.reset();
+
+        assertEquals(0, bank.getBalance());
+        assertThrows(InvalidAmountException.class, () -> {bank.getAccount(sav1);});
     }
 }

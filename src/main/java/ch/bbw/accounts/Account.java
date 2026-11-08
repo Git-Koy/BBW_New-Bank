@@ -71,8 +71,10 @@ public abstract class Account {
      *
      * @param date   the transaction date
      * @param amount the amount to deposit
-     * @param text the transaction text
+     * @param text the transaction text, without a text the booking gets "Einzahlung"
      * @return the new balance of the account
+     * @throws InvalidAmountException if the amount is 0 or negative
+     * @throws InvalidDateException if the date is in the past
      */
     public long deposit(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
         if (amount <= 0)
@@ -92,6 +94,8 @@ public abstract class Account {
      * @param date   the transaction date
      * @param amount the amount to deposit
      * @return the new balance of the account
+     * @throws InvalidAmountException if the amount is 0 or negative
+     * @throws InvalidDateException if the date is in the past
      */
     public long deposit(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
         return deposit(date, amount, null);
@@ -102,10 +106,10 @@ public abstract class Account {
      *
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
-     * @param text der Transaktionstext
-     * @return boolean <code>true</code>, falls die
-     * Abhebung erfolgreich war, andernfalls (z.B.
-     * bei negativem Betrag) <code>false</code>.
+     * @param text der Transaktionstext, ohne Text bekommt die Buchung "Auszahlung"
+     * @return der neue Saldo
+     * @throws InvalidAmountException if the amount is 0 or negative
+     * @throws InvalidDateException if the date is in the past
      */
     public long withdraw(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
         if (amount <= 0)
@@ -125,9 +129,9 @@ public abstract class Account {
      *
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
-     * @return boolean <code>true</code>, falls die
-     * Abhebung erfolgreich war, andernfalls (z.B.
-     * bei negativem Betrag) <code>false</code>.
+     * @return der neue Saldo
+     * @throws InvalidAmountException if the amount is 0 or negative
+     * @throws InvalidDateException if the date is in the past
      */
     public long withdraw(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
         return withdraw(date, amount, null);

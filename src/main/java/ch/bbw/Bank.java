@@ -147,13 +147,9 @@ public class Bank {
      * Gibt den Kontostand des Kontos mit der gegebenen
      * Kontonummer zurück.
      *
-     * <p>
-     * Falls kein Konto mit der gesuchten Kontonummer
-     * existiert, gibt diese Methode 0 (zero) zurück.
-     * </p>
-     *
      * @param id die Kontonummer
      * @return long der Kontostand des Kontos
+     * @throws InvalidAmountException if no account with this id exists
      */
     public long getBalance(String id) throws InvalidAmountException {
         return getAccount(id).getBalance();
@@ -163,16 +159,12 @@ public class Bank {
      * Zahlt den gegebenen Betrag auf das Konto mit
      * der gegebenen Kontonummer ein.
      *
-     * <p>
-     * Diese Methode kann <code>false</code> zur�ckgeben,
-     * falls das Konto nicht existiert, oder falls die
-     * Einzahlung auf dem Konto nicht funktioniert.
-     * </p>
-     *
      * @param id     die Kontonummer
      * @param date   das Transaktionsdatum
      * @param amount der einzuzahlende Betrag
      * @param text der Transaktionstext
+     * @throws InvalidAmountException if the account doesn't exist or the amount is not allowed
+     * @throws InvalidDateException if the date is in the past
      */
     public void deposit(String id, Scheduled date,
                         long amount, String text) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
@@ -185,15 +177,11 @@ public class Bank {
      * Zahlt den gegebenen Betrag auf das Konto mit
      * der gegebenen Kontonummer ein.
      *
-     * <p>
-     * Diese Methode kann <code>false</code> zur�ckgeben,
-     * falls das Konto nicht existiert, oder falls die
-     * Einzahlung auf dem Konto nicht funktioniert.
-     * </p>
-     *
      * @param id     die Kontonummer
      * @param date   das Transaktionsdatum
      * @param amount der einzuzahlende Betrag
+     * @throws InvalidAmountException if the account doesn't exist or the amount is not allowed
+     * @throws InvalidDateException if the date is in the past
      */
     public void deposit(String id, Scheduled date,
                         long amount) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
@@ -206,17 +194,13 @@ public class Bank {
      * Hebt den gegebenen Betrag vom Konto mit
      * der gegebenen Kontonummer ab.
      *
-     * <p>
-     * Diese Methode kann <code>false</code> zur�ckgeben,
-     * falls das Konto nicht existiert, oder falls das
-     * Abheben vom Konto nicht funktioniert.
-     * </p>
-     *
      * @param id     die Kontonummer
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
      * @param text der Transaktionstext
      * @return new balance
+     * @throws InvalidAmountException if the account doesn't exist or the amount is not allowed
+     * @throws InvalidDateException if the date is in the past
      */
     public long withdraw(String id, Scheduled date,
                             long amount, String text) throws InvalidAmountException, InvalidAmountException, InvalidDateException {
@@ -229,16 +213,12 @@ public class Bank {
      * Hebt den gegebenen Betrag vom Konto mit
      * der gegebenen Kontonummer ab.
      *
-     * <p>
-     * Diese Methode kann <code>false</code> zur�ckgeben,
-     * falls das Konto nicht existiert, oder falls das
-     * Abheben vom Konto nicht funktioniert.
-     * </p>
-     *
      * @param id     die Kontonummer
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
      * @return new balance
+     * @throws InvalidAmountException if the account doesn't exist or the amount is not allowed
+     * @throws InvalidDateException if the date is in the past
      */
     public long withdraw(String id, Scheduled date,
                          long amount) throws InvalidAmountException, InvalidAmountException, InvalidDateException {

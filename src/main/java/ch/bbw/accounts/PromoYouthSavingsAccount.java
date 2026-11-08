@@ -10,12 +10,12 @@ import java.time.YearMonth;
 import java.time.ZoneId;
 
 /**
- * Promo youth savings account. It extends Account instead of SavingsAccount so it can stay independent, even though that means the no-overdraft rule needs to be duplicated.
+ * Promo youth savings account. It extends SavingsAccount, because it is a savings account with one extra rule: it reuses the no-overdraft rule and only adds the monthly withdrawal limit.
  *
  * @author Kay Ježek, kay@jeschis.ch
  * @version 1.0
  */
-public class PromoYouthSavingsAccount extends Account{
+public class PromoYouthSavingsAccount extends SavingsAccount{
 
     /**
      * The monthly limit on the account
@@ -31,19 +31,16 @@ public class PromoYouthSavingsAccount extends Account{
     }
 
     /**
-     * Withdraw has a limit of CHF 200 that cannot be exceeded
+     * Withdraw has a limit of CHF 200 per month that cannot be exceeded, all withdrawals of the same month count together
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
      * @param text der Transaktionstext
-     * @return
-     * @throws InvalidAmountException
-     * @throws InvalidDateException
+     * @return der neue Saldo
+     * @throws InvalidAmountException if the amount is 0, negative, greater than the balance or over the monthly limit
+     * @throws InvalidDateException if the date is in the past
      */
     @Override
     public long withdraw(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
-        if (getBalance() < amount)
-            throw new InvalidAmountException("Amount is greater than balance");
-
         long allowance = 0;
 
 
@@ -63,6 +60,11 @@ public class PromoYouthSavingsAccount extends Account{
         return super.withdraw(date, amount, text);
     }
 
+    /**
+     * Returns the name of the account type
+     *
+     * @return "Promo Youth Savings Account"
+     */
     @Override
     public String getAccountType() {
         return "Promo Youth Savings Account";

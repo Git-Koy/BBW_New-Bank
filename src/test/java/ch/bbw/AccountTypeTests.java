@@ -43,6 +43,25 @@ public class AccountTypeTests {
     }
 
     /**
+     * There are exactly three account types
+     */
+    @Test
+    @DisplayName("Having three account types should work")
+    public void testThreeTypes() {
+        assertEquals(3, AccountType.values().length);
+    }
+
+    /**
+     * An account type can be found by its name
+     */
+    @Test
+    @DisplayName("Finding an account type by its name should work")
+    public void testValueOf() {
+        assertEquals(AccountType.SALARY, AccountType.valueOf("SALARY"));
+        assertThrows(IllegalArgumentException.class, () -> {AccountType.valueOf("CHECKING");});
+    }
+
+    /**
      * The factory builds the ids with the prefix of the account type
      */
     @Test

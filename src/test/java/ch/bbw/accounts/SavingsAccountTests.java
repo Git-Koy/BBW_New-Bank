@@ -6,6 +6,8 @@ import ch.bbw.exceptions.InvalidDateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.temporal.ChronoUnit;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -28,6 +30,8 @@ public class SavingsAccountTests
 	{
 		SavingsAccount sav1 = new SavingsAccount("CH-01");
 		sav1.deposit(Scheduled.now(), 15, "This is a test text");
+
+		assertEquals(15, sav1.getBalance());
 	}
 
 	/**
@@ -45,6 +49,65 @@ public class SavingsAccountTests
 
 		assertEquals(0, sav1.getBalance());
 		assertThrows(InvalidAmountException.class, () -> {sav1.withdraw(Scheduled.now(), 1, "This is a test text");});
+	}
+
+	/**
+	 * Withdrawing from a new account fails and adds no booking
+	 */
+	@Test
+	@DisplayName("Withdrawing from an empty account fails")
+	public void testWithdrawFromEmptyAccount()
+	{
+		SavingsAccount sav1 = new SavingsAccount("CH-01");
+
+		assertThrows(InvalidAmountException.class, () -> {sav1.withdraw(Scheduled.now(), 1, "This is a test text");});
+		assertEquals(0, sav1.getBalance());
+		assertEquals(0, sav1.getBookings().size());
+	}
+
+	/**
+	 * Withdrawing 0 or a negative amount is rejected
+	 * @throws InvalidAmountException
+	 * @throws InvalidDateException
+	 */
+	@Test
+	@DisplayName("Withdrawing 0 or a negative amount fails")
+	public void testWithdrawInvalidAmount() throws InvalidAmountException, InvalidDateException
+	{
+		SavingsAccount sav1 = new SavingsAccount("CH-01");
+		sav1.deposit(Scheduled.now(), 15, "This is a test text");
+
+		assertThrows(InvalidAmountException.class, () -> {sav1.withdraw(Scheduled.now(), 0, "This is a test text");});
+		assertThrows(InvalidAmountException.class, () -> {sav1.withdraw(Scheduled.now(), -5, "This is a test text");});
+		assertEquals(15, sav1.getBalance());
+	}
+
+	/**
+	 * Withdrawing with a date in the past is rejected
+	 * @throws InvalidAmountException
+	 * @throws InvalidDateException
+	 */
+	@Test
+	@DisplayName("Withdrawing with a date in the past fails")
+	public void testWithdrawPastDate() throws InvalidAmountException, InvalidDateException
+	{
+		SavingsAccount sav1 = new SavingsAccount("CH-01");
+		sav1.deposit(Scheduled.now(), 15, "This is a test text");
+
+		assertThrows(InvalidDateException.class, () -> {sav1.withdraw(Scheduled.now().minus(1, ChronoUnit.DAYS), 1, "This is a test text");});
+		assertEquals(15, sav1.getBalance());
+	}
+
+	/**
+	 * The account type of a savings account
+	 */
+	@Test
+	@DisplayName("The account type shows up correctly")
+	public void testAccountType()
+	{
+		SavingsAccount sav1 = new SavingsAccount("CH-01");
+
+		assertEquals("Savings Account", sav1.getAccountType());
 	}
 }
 

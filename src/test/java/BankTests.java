@@ -1,6 +1,13 @@
+import ch.bbw.Scheduled;
+import ch.bbw.accounts.*;
+import ch.bbw.exceptions.InvalidAmountException;
+import ch.bbw.exceptions.InvalidDateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
@@ -72,6 +79,32 @@ public class BankTests {
     @DisplayName("Tests the List of the bottom 5 balances")
     public void testBottom5() {
         fail("ToDo");
+    }
+
+    /**
+     * Puts all types of accounts in a list, sums the balances and asserts the total
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
+    @Test
+    @DisplayName("Adds one account of each type into a list, sums the balances and asserts the total")
+    public void testAssertAccounts() throws InvalidDateException, InvalidAmountException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        SalaryAccount sal1 = new SalaryAccount("CH-02", -12);
+        PromoYouthSavingsAccount pys1 = new PromoYouthSavingsAccount("CH-03");
+
+        sav1.deposit(Scheduled.now(), 15, "This is a test text");
+        sal1.deposit(Scheduled.now(), 15, "This is a test text");
+        pys1.deposit(Scheduled.now(), 15, "This is a test text");
+
+        long total = 0;
+        List<Account> accounts = List.of(sav1, sal1, pys1);
+
+        for (Account account : accounts) {
+            total += account.getBalance();
+        }
+
+        assertEquals(45, total);
     }
 
 }

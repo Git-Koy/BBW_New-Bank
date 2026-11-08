@@ -2,7 +2,7 @@
 
 Personal tracking file — what's actually done in the code vs. what each exercise still asks for.
 Last checked against the code: 2026-11-08 (no `fail("ToDo")` left,
-`./mvnw clean test` → `Tests run: 72, Failures: 0, Errors: 0`).
+`./mvnw clean test` → `Tests run: 95, Failures: 0, Errors: 0`).
 
 Update this file whenever you finish a task below — that's the whole point of it.
 
@@ -67,7 +67,19 @@ task. Write the test, watch it fail (`./mvnw test`), then implement just enough 
 
 ## Sprints 6–11 — Spring Boot backend ([`docs/exercises/10-Exercise-build-the-be.md`](docs/exercises/10-Exercise-build-the-be.md))
 
-- [ ] Not started — comes after Sprint 5.
+- [x] REST API for all endpoints of the brief, plus `GET /accounts/{id}/bookings`.
+- [x] `BankService` between controllers and `Bank`; `BankConfiguration` is the only place that calls `Bank.getInstance()`.
+- [x] DTO records in `ch.bbw.web.dto`, no domain object leaves the server.
+- [x] `@RestControllerAdvice` (`ErrorHandler`): unknown account `404`, invalid amount/date `400`, never `500`.
+- [x] CORS for `http://localhost:5173`.
+- [x] `@SpringBootTest` controller tests (`AccountControllerTests`, `BankControllerTests`), `BankServiceTests`.
+
+## Sprint 13 — React frontend
+
+- [x] Vite + React in `frontend/`, central API module `src/api.js`, URL from `.env.development`.
+- [x] Create account, deposit, withdraw, balance, statement, bank overview.
+- [x] Backend error messages shown in the UI, loading state visible, no CORS errors.
+- [x] Tests for the API module and the CHF conversion (`npm test`).
 
 ## Untracked / extra work already in the code
 
@@ -82,7 +94,7 @@ tests for it when its sprint comes around (or now, if you want to lock in the be
 ## How to re-check this file's accuracy
 
 ```bash
-./mvnw clean test   # should read "Tests run: 72, Failures: 0" — more tests are fine, failures are not
+./mvnw clean test   # should read "Tests run: 95, Failures: 0" — more tests are fine, failures are not
 ```
 
 Grep for stub markers to see which test methods still need writing:

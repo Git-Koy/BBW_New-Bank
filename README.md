@@ -28,14 +28,54 @@ cd BBW_New-Bank
 
 Unter Windows `mvnw.cmd` statt `./mvnw` verwenden.
 
-Die Anwendung hat noch keine REST-Endpunkte, darum antwortet `http://localhost:8080/` mit `404`.
-Ob sie läuft, zeigt der Health-Check von Spring Boot Actuator:
+Ob das Backend läuft, zeigt der Health-Check von Spring Boot Actuator:
 
 ```bash
 curl http://localhost:8080/actuator/health
 ```
 
 Eine laufende Anwendung antwortet mit `"status":"UP"`.
+
+### Frontend starten
+
+Das React-Frontend braucht Node.js 18 oder neuer und das laufende Backend.
+
+```bash
+cd frontend
+npm install
+npm run dev     # http://localhost:5173
+npm test        # Tests für das API-Modul und die CHF-Umrechnung
+```
+
+Die URL des Backends steht in `frontend/.env.development` (`VITE_API_URL`), nicht im Code.
+
+---
+
+## REST-API
+
+Alle Beträge sind Millirappen. Das Datum ist optional (ISO-8601, z. B. `2026-12-01T10:00:00Z`);
+ohne Datum gilt «jetzt». Fehler kommen als JSON `{ "error": "…" }` zurück.
+
+| Methode | Pfad | Body | Antwort |
+|---|---|---|---|
+| POST | `/accounts/savings` | – | `201 { "id": "S-1000" }` |
+| POST | `/accounts/promo-youth` | – | `201 { "id": "Y-1001" }` |
+| POST | `/accounts/salary` | `{ "creditLimit": -50000 }` | `201 { "id": "P-1002" }` |
+| GET | `/accounts/{id}` | – | `{ "id", "type", "balance" }` |
+| GET | `/accounts/{id}/balance` | – | `{ "balance" }` |
+| GET | `/accounts/{id}/bookings` | – | `[ { "date", "amount", "text" } ]` |
+| POST | `/accounts/{id}/deposit` | `{ "amount", "date"?, "text"? }` | `{ "balance" }` |
+| POST | `/accounts/{id}/withdraw` | `{ "amount", "date"?, "text"? }` | `{ "balance" }` |
+| GET | `/bank/balance` | – | `{ "balance" }` |
+| GET | `/bank/top5/highest` | – | `[ { "id", "type", "balance" } ]` |
+| GET | `/bank/top5/lowest` | – | `[ { "id", "type", "balance" } ]` |
+
+| Fehler | Status |
+|---|---|
+| Unbekannte Kontonummer (`AccountNotFoundException`) | `404` |
+| Ungültiger Betrag, Saldo/Limite überschritten, Datum in der Vergangenheit, falsches Datum, positive Kreditlimite | `400` |
+
+CORS erlaubt nur `http://localhost:5173` (Vite-Dev-Server).
 
 ---
 
@@ -74,9 +114,13 @@ src/main/java/ch/bbw/
 ├── Scheduled.java               Transaktionsdatum
 ├── MoneyFormatter.java          Millirappen als CHF-Betrag
 ├── accounts/                    Account, SavingsAccount, PromoYouthSavingsAccount, SalaryAccount
-└── exceptions/                  InvalidAmountException, InvalidDateException
+├── exceptions/                  InvalidAmountException, InvalidDateException, AccountNotFoundException
+├── service/                     BankService (@Service), BankConfiguration (Bank als Spring-Bean)
+└── web/                         AccountController, BankController, ErrorHandler, WebConfiguration (CORS)
+    └── dto/                     Request- und Response-Records, die über HTTP gehen
 
-src/test/java/                   JUnit-5-Tests, mindestens 5 pro Fachklasse
+src/test/java/                   JUnit-5-Tests, mindestens 5 pro Fachklasse, inkl. @SpringBootTest
+frontend/                        React-Frontend (Vite): src/api.js ist das zentrale API-Modul
 docs/
 ├── use-cases/                   Anwendungsfälle UC-01 bis UC-06 mit Diagramm
 ├── class-diagram.md             Klassendiagramm
@@ -102,7 +146,8 @@ Sprints kommen per Merge in `main`.
 | 3 | Kontotypen | `03-Exercise-specific-accounts` | Lohnkonto, Promo-Jugendsparkonto, Vererbung |
 | 4 | Factory Pattern | `04-Exercise-factory-pattern` | richtige Kontotypen, `AccountType`, thread-sichere Nummern |
 | 5 | Singleton Pattern | `05-Exercise-singleton-pattern` | eine Bank, Test-Isolation, Factory per Konstruktor |
-| 6–11 | Spring-Boot-Backend | – | noch offen |
+| 6–11 | Spring-Boot-Backend | `06-Exercise-build-the-be` | REST-API, Service-Schicht, DTOs, Fehlerbehandlung, CORS |
+| 13 | React-Frontend | `13-Exercise-frontend` | Konto eröffnen, ein- und auszahlen, Kontoauszug, Bankübersicht |
 
 Die Aufgaben stehen in [`docs/exercises/`](docs/exercises/), die Szenarien in
 [`docs/scenarios/`](docs/scenarios/).
@@ -118,7 +163,9 @@ Die Aufgaben stehen in [`docs/exercises/`](docs/exercises/), die Szenarien in
 | Build | Maven Wrapper |
 | Tests | JUnit 5 (`spring-boot-starter-test`) |
 | Monitoring | Spring Boot Actuator, Health-Check unter `/actuator/health` |
-| Datenbank | H2 in-memory (für die Sprints 6–11) |
+| Datenbank | H2 in-memory (noch nicht genutzt, die Bank lebt im Speicher) |
+| Frontend | React 18, Vite 5, Tests mit dem Node-Test-Runner |
 
-Die Domänenklassen (`Bank`, `Account`, …) sind bewusst **keine** Spring-Beans, damit das
-objektorientierte Design für sich steht. Die Service-Schicht kommt erst mit Sprint 6.
+Die Domänenklassen (`Account`, `AccountFactory`, …) sind bewusst **keine** Spring-Beans, damit das
+objektorientierte Design für sich steht. Nur die eine `Bank` wird in `BankConfiguration` als Bean
+bereitgestellt; Controller → `BankService` → `Bank` bekommen ihre Abhängigkeiten per Konstruktor.

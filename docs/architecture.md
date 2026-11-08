@@ -24,6 +24,28 @@ src/main/java/ch/bbw/
 Das [Klassendiagramm](class-diagram.md) zeigt alle Klassen mit Attributen, Methoden und
 Beziehungen, die [Anwendungsfälle](use-cases/README.md) zeigen, was die Bank für wen tut.
 
+## Schichten
+
+```
+React-Frontend (frontend/, Port 5173)
+   │  src/api.js: einziges Modul, das fetch aufruft
+   ▼  HTTP + JSON (CORS erlaubt nur localhost:5173)
+Web-Schicht (ch.bbw.web)          AccountController, BankController, ErrorHandler, DTOs
+   ▼
+Service-Schicht (ch.bbw.service)  BankService (synchronized), BankConfiguration
+   ▼
+Domäne (ch.bbw, ch.bbw.accounts)  Bank, AccountFactory, Account …
+```
+
+- Die Controller sprechen nie direkt mit der `Bank`, nur mit dem `BankService`.
+- Über HTTP gehen nur DTOs (`AccountResponse`, `TransactionRequest` …), nie `Account` oder `Booking`.
+- Der `ErrorHandler` (`@RestControllerAdvice`) macht aus `AccountNotFoundException` ein `404` und
+  aus `InvalidAmountException`, `InvalidDateException`, `IllegalArgumentException` und einem
+  unlesbaren Datum ein `400`, immer als `{ "error": "…" }`. Ein erwarteter Fehler gibt nie `500`.
+- `BankConfiguration` ist der Composition Root: die einzige Stelle, die `Bank.getInstance()` aufruft.
+- Das Datum kommt als ISO-8601-Text und wird im Controller in ein `Scheduled` umgewandelt, damit die
+  innere Darstellung von `Scheduled` nicht in der API sichtbar ist.
+
 ## Verantwortlichkeiten
 
 Jede Klasse hat genau eine Aufgabe:
@@ -79,7 +101,8 @@ danach die Umsetzung (grün). Fertige Branches kommen per Merge in `main`.
 | 4 | Factory | `04-Exercise-factory-pattern` | Cedric Caviezel | richtige Kontotypen, `AccountType`, `create(...)`, thread-sichere Nummern |
 | 5 | Singleton | `05-Exercise-singleton-pattern` | Cedric Caviezel | `getInstance()`, Test-Isolation mit `reset()`, Factory per Konstruktor |
 | – | Dokumentation | `Documentation` | Cedric Caviezel | README, Anwendungsfälle, Klassendiagramm, Architektur, fehlende Tests |
-| 6–11 | Spring-Boot-Backend | – | – | noch offen ([Aufgabe](exercises/10-Exercise-build-the-be.md)) |
+| 6–11 | Spring-Boot-Backend | `06-Exercise-build-the-be` | Cedric Caviezel | REST-API, `BankService`, DTOs, `ErrorHandler`, CORS ([Aufgabe](exercises/10-Exercise-build-the-be.md)) |
+| 13 | React-Frontend | `13-Exercise-frontend` | Cedric Caviezel | zentrales API-Modul, Fehlermeldungen und Ladezustand im UI |
 
 ## Tests
 
@@ -101,3 +124,7 @@ abheben, genau bis zur Kreditlimite, Monatslimite, Datum in der Vergangenheit, B
 | `AccountFactoryTests` | richtige Typen, Präfixe, Kreditlimite, eindeutige Nummern auch mit Threads |
 | `AccountTypeTests` | Präfixe, Eindeutigkeit |
 | `BookingTests` | Werte, Standardtexte, negative Beträge |
+| `BankServiceTests` | Service: Konten eröffnen, ein- und auszahlen, unbekanntes Konto |
+| `AccountControllerTests` | `@SpringBootTest` mit MockMvc: alle `/accounts`-Endpunkte, 400 und 404 statt 500 |
+| `BankControllerTests` | `/bank`-Endpunkte, CORS erlaubt localhost:5173 und lehnt andere ab |
+| `frontend/src/*.test.js` | API-Modul mit Fake-`fetch`, CHF-Umrechnung (`npm test`) |

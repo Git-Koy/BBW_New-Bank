@@ -1,4 +1,5 @@
 import ch.bbw.Bank;
+import ch.bbw.MoneyFormatter;
 import ch.bbw.Scheduled;
 import ch.bbw.accounts.*;
 import ch.bbw.exceptions.InvalidAmountException;
@@ -8,8 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -19,40 +19,88 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @version 1.0
  */
 public class BankTests {
+    /**
+     * Creates two savings accounts through the bank and checks the ids
+     * @throws InvalidAmountException
+     */
     @Test
     @DisplayName("Constructor Test, creates two SavingsAccounts")
-    public void testCreate() {
-        fail("ToDo");
+    public void testCreate() throws InvalidAmountException {
+        Bank bank = new Bank();
+        String sav1 = bank.createSavingsAccount();
+        String sav2 = bank.createSavingsAccount();
+
+        assertNotNull(sav1);
+        assertNotNull(sav2);
+        assertNotEquals(sav1, sav2);
+        assertEquals(sav1, bank.getAccount(sav1).getId());
+        assertEquals(sav2, bank.getAccount(sav2).getId());
     }
 
+    /**
+     * Deposits on a savings account through the bank
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
     @Test
     @DisplayName("Simple deposit on Bank-SavingsAccount should work")
-    public void testDeposit() {
-        fail("ToDo");
+    public void testDeposit() throws InvalidDateException, InvalidAmountException {
+        Bank bank = new Bank();
+        String sav1 = bank.createSavingsAccount();
+
+        bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
+
+        assertEquals(15, bank.getBalance(sav1));
+        assertEquals(1, bank.getAccount(sav1).getBookings().size());
     }
 
+    /**
+     * Withdraws from a savings account through the bank, withdrawing more than the balance throws
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
     @Test
     @DisplayName("Simple withdraw on Bank-SavingsAccount should work")
-    public void testWithdraw() {
-        fail("ToDo");
+    public void testWithdraw() throws InvalidDateException, InvalidAmountException {
+        Bank bank = new Bank();
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
+
+        assertEquals(2, bank.withdraw(sav1, Scheduled.now(), 13, "This is a test text"));
+        assertEquals(2, bank.getBalance(sav1));
+        assertThrows(InvalidAmountException.class, () -> {bank.withdraw(sav1, Scheduled.now(), 3, "This is a test text");});
     }
 
     /**
      * Experimente mit print().
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
      */
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
-    public void testPrint() {
-        fail("ToDo");
+    public void testPrint() throws InvalidDateException, InvalidAmountException {
+        Bank bank = new Bank();
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
+        bank.withdraw(sav1, Scheduled.now(), 13, "This is a test text");
+        System.out.println(bank.getAccount(sav1).printStatement());
+        assertTrue(bank.getAccount(sav1).printStatement().contains("CHF 0.00002"));
     }
 
     /**
      * Experimente mit print(year, month).
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
      */
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
-    public void testMonthlyPrint() {
-        fail("ToDo");
+    public void testMonthlyPrint() throws InvalidDateException, InvalidAmountException {
+        Bank bank = new Bank();
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
+        bank.withdraw(sav1, Scheduled.now(), 13, "This is a test text");
+        System.out.println("Your monthly balance is:" + MoneyFormatter.toCHF(bank.getBalance(sav1)));
+        assertEquals(2, bank.getBalance(sav1));
     }
 
     /**

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -64,16 +65,39 @@ public class AccountTests {
         assertEquals("This is a test text", sav1.getBookings().get(1).text());
     }
 
+    /**
+     * Two accounts in a TreeMap are found again by their id and are still the same objects
+     * @throws InvalidAmountException
+     * @throws InvalidDateException
+     */
     @Test
     @DisplayName("TreeMap of two Account-References should work")
-    public void testReferences() {
-        fail("ToDo");
+    public void testReferences() throws InvalidAmountException, InvalidDateException {
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+        SavingsAccount sav2 = new SavingsAccount("CH-02");
+        TreeMap<String, Account> accounts = new TreeMap<>();
+        accounts.put(sav1.getId(), sav1);
+        accounts.put(sav2.getId(), sav2);
+
+        accounts.get("CH-01").deposit(Scheduled.now(), 15, "This is a test text");
+
+        assertSame(sav1, accounts.get("CH-01"));
+        assertSame(sav2, accounts.get("CH-02"));
+        assertEquals(15, sav1.getBalance());
+        assertEquals(0, sav2.getBalance());
     }
 
+    /**
+     * A transaction date now or in the future is valid, a date in the past is not
+     */
     @Test
-    @DisplayName("TreeMap of two Account-References should work")
+    @DisplayName("Checking if a transaction date is valid should work")
     public void testCanTransact() {
-        fail("ToDo");
+        SavingsAccount sav1 = new SavingsAccount("CH-01");
+
+        assertFalse(sav1.isInvalidTransaction(Scheduled.now()));
+        assertFalse(sav1.isInvalidTransaction(Scheduled.now().plus(1, ChronoUnit.DAYS)));
+        assertTrue(sav1.isInvalidTransaction(Scheduled.now().minus(1, ChronoUnit.MILLIS)));
     }
 
     /**

@@ -16,6 +16,13 @@ pom.xml.versionsBackup
 release.properties
 dependency-reduced-pom.xml
 
+# Node / Vite (frontend)
+node_modules/
+dist/
+.env.local
+.env.*.local
+npm-debug.log*
+
 # IntelliJ IDEA
 .idea/
 *.iml

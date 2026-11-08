@@ -45,7 +45,7 @@ public class SalaryAccountTests
 		sal1.withdraw(Scheduled.now(), 12, "This is a test text");
 		assertEquals(-12, sal1.getBalance());
 
-		assertThrows(IllegalArgumentException.class, () -> {sal1.withdraw(Scheduled.now(), 1, "This is a test text");});
+		assertThrows(InvalidAmountException.class, () -> {sal1.withdraw(Scheduled.now(), 1, "This is a test text");});
 	}
 
 	/**
@@ -76,6 +76,17 @@ public class SalaryAccountTests
 		assertEquals(0, sal1.getBookings().size());
 		assertThrows(IllegalArgumentException.class, () -> {sal1.withdraw(Scheduled.now(), 13, "This is a test text");});
 		assertEquals(0, sal1.getBookings().size());
+	}
+
+	/**
+	 * A positive credit limit will be rejected
+	 * @throws InvalidDateException
+	 * @throws InvalidAmountException
+	 */
+	@Test
+	@DisplayName("A positive credit limit will be rejected")
+	public void testRejectPositiveCreditLimit() throws InvalidDateException, InvalidAmountException {
+		assertThrows(IllegalArgumentException.class, () -> {SalaryAccount sal1 = new SalaryAccount("CH-01", 12);});
 	}
 
 

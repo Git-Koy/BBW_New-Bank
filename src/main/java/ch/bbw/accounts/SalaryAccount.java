@@ -1,5 +1,9 @@
 package ch.bbw.accounts;
 
+import ch.bbw.Scheduled;
+import ch.bbw.exceptions.InvalidAmountException;
+import ch.bbw.exceptions.InvalidDateException;
+
 /**
  * Salary account
  *
@@ -10,17 +14,36 @@ public class SalaryAccount extends Account{
     /**
      * The credit limit
      */
-    private long creditlimit;
+    private long creditLimit;
 
     /**
      * Creates a new salary account
      *
      * @param id the account number
-     * @param creditlimit the credit limit
+     * @param creditLimit the credit limit
      */
-    public SalaryAccount(String id, long creditlimit)
+    public SalaryAccount(String id, long creditLimit)
     {
         super(id);
-        this.creditlimit = creditlimit;
+        this.creditLimit = creditLimit;
+
+        if (creditLimit > 0) {
+            throw new IllegalArgumentException("Credit limit can't be positive");
+        }
     }
+
+    public long getCreditLimit() {
+        return creditLimit;
+    }
+
+    @Override
+    public long withdraw(Scheduled date, long amount, String text ) throws IllegalArgumentException, InvalidDateException, InvalidAmountException {
+        if (getBalance() - amount >= creditLimit) {
+            throw new InvalidAmountException("Amount is greater than credit limit of CHF " + creditLimit);
+        }
+
+        return super.withdraw(date, amount, text);
+    }
+
+
 }

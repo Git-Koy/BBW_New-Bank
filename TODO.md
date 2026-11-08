@@ -2,7 +2,7 @@
 
 Personal tracking file — what's actually done in the code vs. what each exercise still asks for.
 Last checked against the code: 2026-11-08 (no `fail("ToDo")` left,
-`./mvnw clean test` → `Tests run: 56, Failures: 0, Errors: 0`).
+`./mvnw clean test` → `Tests run: 72, Failures: 0, Errors: 0`).
 
 Update this file whenever you finish a task below — that's the whole point of it.
 
@@ -56,6 +56,15 @@ task. Write the test, watch it fail (`./mvnw test`), then implement just enough 
 - [x] Arguments for and against the singleton in the class JavaDoc of `Bank`.
 - [x] `./mvnw test` passes twice in a row.
 
+## Documentation
+
+- [x] README with project, domain (Millirappen, bookings, account types), structure, sprints and `./mvnw spring-boot:run`.
+- [x] Use cases UC-01 to UC-06 in `docs/use-cases/` with a use case diagram.
+- [x] Class diagram in `docs/class-diagram.md` (`Account` → `SavingsAccount` → `PromoYouthSavingsAccount`, `SalaryAccount`).
+- [x] Architecture and sprint documentation in `docs/architecture.md`.
+- [x] Every test class has at least 5 tests with `assert`; every method in `src/main` has JavaDoc.
+- [x] `.gitignore` complete, unused `HELP.md` removed.
+
 ## Sprints 6–11 — Spring Boot backend ([`docs/exercises/10-Exercise-build-the-be.md`](docs/exercises/10-Exercise-build-the-be.md))
 
 - [ ] Not started — comes after Sprint 5.
@@ -73,7 +82,7 @@ tests for it when its sprint comes around (or now, if you want to lock in the be
 ## How to re-check this file's accuracy
 
 ```bash
-./mvnw clean test   # should read "Tests run: 56, Failures: 0" — more tests are fine, failures are not
+./mvnw clean test   # should read "Tests run: 72, Failures: 0" — more tests are fine, failures are not
 ```
 
 Grep for stub markers to see which test methods still need writing:

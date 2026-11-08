@@ -10,6 +10,12 @@ import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests for the class PromoYouthSavingsAccount
+ *
+ * @author Kay Ježek, kay@jeschis.ch
+ * @version 1.0
+ */
 public class PromoYouthSavingsAccountTests {
     /**
      * There is a withdrawal limit of CHF 200 per month

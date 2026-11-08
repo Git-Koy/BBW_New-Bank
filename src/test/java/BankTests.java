@@ -4,6 +4,7 @@ import ch.bbw.Scheduled;
 import ch.bbw.accounts.*;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
  * @version 1.0
  */
 public class BankTests {
+    /**
+     * Empties the bank before every test. Workaround, because all tests share the same singleton bank
+     */
+    @BeforeEach
+    public void setUp() {
+        Bank.reset();
+    }
+
     /**
      * Creates two savings accounts through the bank and checks the ids
      * @throws InvalidAmountException

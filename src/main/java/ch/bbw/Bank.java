@@ -55,6 +55,15 @@ public class Bank {
     }
 
     /**
+     * Removes all accounts from the bank. This is a workaround only for the tests: all tests share the one bank, so every test has to empty it first.
+     * It is a code smell and not a solution, because it only exists so the tests can undo the singleton decision, and any code could delete every account with it.
+     * JUnit runs the tests one after another today. If it ran them in parallel, the tests would still share the one bank and reset() would delete the accounts of another running test.
+     */
+    public static void reset() {
+        getInstance().accounts.clear();
+    }
+
+    /**
      * Erzeugt ein neues Sparkonto
      *
      * @return die neue Kontonummer

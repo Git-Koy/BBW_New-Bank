@@ -23,11 +23,35 @@ public class Bank {
     private final TreeMap<String, Account> accounts;
     private final AccountFactory accountFactory;
     /**
-     * Initialisiert eine neue Bank.
+     * Initialisiert eine neue Bank. It is private, so the only bank comes from getInstance().
      */
-    public Bank() {
+    private Bank() {
         this.accounts = new TreeMap<String, Account>();
         accountFactory = new AccountFactory();
+    }
+
+    /**
+     * Holds the only bank. The JVM loads this class the first time getInstance() is called.
+     */
+    private static class Holder {
+        static final Bank INSTANCE = new Bank();
+    }
+
+    /**
+     * Returns the only bank of the application. It uses the holder idiom, because it is lazy and thread safe without any cost per call.
+     * Comparison of the three variants:
+     * <ul>
+     *     <li>Eager (static final field): thread safe because the JVM creates the bank when the class is loaded, not lazy, no cost per call.</li>
+     *     <li>Lazy with synchronized: thread safe and lazy, but every call has to take the lock, even long after the bank exists.</li>
+     *     <li>Holder idiom: thread safe and lazy, because the JVM only loads the Holder class on the first call, no cost per call.</li>
+     * </ul>
+     * Double-checked locking without volatile is wrong: the JVM is allowed to reorder the writes, so another thread can see the
+     * reference to the bank before the constructor has finished and use a half-built bank.
+     *
+     * @return the bank
+     */
+    public static Bank getInstance() {
+        return Holder.INSTANCE;
     }
 
     /**

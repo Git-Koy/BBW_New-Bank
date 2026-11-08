@@ -26,7 +26,7 @@ public class BankTests {
     @Test
     @DisplayName("Constructor Test, creates two SavingsAccounts")
     public void testCreate() throws InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         String sav2 = bank.createSavingsAccount();
 
@@ -45,7 +45,7 @@ public class BankTests {
     @Test
     @DisplayName("Simple deposit on Bank-SavingsAccount should work")
     public void testDeposit() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
 
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
@@ -62,7 +62,7 @@ public class BankTests {
     @Test
     @DisplayName("Simple withdraw on Bank-SavingsAccount should work")
     public void testWithdraw() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
 
@@ -79,7 +79,7 @@ public class BankTests {
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
     public void testPrint() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
         bank.withdraw(sav1, Scheduled.now(), 13, "This is a test text");
@@ -95,7 +95,7 @@ public class BankTests {
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
     public void testMonthlyPrint() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
         bank.withdraw(sav1, Scheduled.now(), 13, "This is a test text");
@@ -109,7 +109,7 @@ public class BankTests {
     @Test
     @DisplayName("Tests the balance of two SavingsAccounts from the Bank")
     public void testBalance() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         String sav2 = bank.createSavingsAccount();
 
@@ -125,7 +125,7 @@ public class BankTests {
     @Test
     @DisplayName("Tests the List of the top 5 balances")
     public void testTop5() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         for (int i = 1; i <= 6; i++) {
             String id = bank.createSavingsAccount();
             bank.deposit(id, Scheduled.now(), i * 100);
@@ -144,7 +144,7 @@ public class BankTests {
     @Test
     @DisplayName("Tests the List of the bottom 5 balances")
     public void testBottom5() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         for (int i = 1; i <= 6; i++) {
             String id = bank.createSavingsAccount();
             bank.deposit(id, Scheduled.now(), i * 100);

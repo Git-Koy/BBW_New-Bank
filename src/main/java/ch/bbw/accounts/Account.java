@@ -4,7 +4,9 @@ import ch.bbw.Booking;
 import ch.bbw.Scheduled;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
+import ch.bbw.MoneyFormatter;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,10 +25,6 @@ public abstract class Account {
      * Die Buchungen.
      */
     private final List<Booking> bookings;
-    /**
-     * Kontostand in Millirappen.
-     */
-    private long balance;
 
     /**
      * Erzeugt ein neues Konto.
@@ -35,7 +33,6 @@ public abstract class Account {
      */
     public Account(String id) {
         this.id = id;
-        this.balance = 0;
         this.bookings = new ArrayList<Booking>();
     }
 
@@ -54,7 +51,9 @@ public abstract class Account {
      * @return Saldo
      */
     public long getBalance() {
-        return balance;
+        return bookings.stream()
+                .mapToLong(Booking::amount)
+                .sum();
     }
 
     /**
@@ -72,19 +71,53 @@ public abstract class Account {
      *
      * @param date   the transaction date
      * @param amount the amount to deposit
+     * @param text the transaction text
      * @return the new balance of the account
      */
-    public long deposit(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
+    public long deposit(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
         if (amount <= 0)
             throw new InvalidAmountException("amount must be greater than 0");
 
         if (isInvalidTransaction(date))
             throw new InvalidDateException("date mustn't be in the past");
 
-        balance += amount;
-        bookings.add(new Booking(date.toUnix(), amount));
+        bookings.add(new Booking(date.toUnix(), amount, text));
 
-        return balance;
+        return getBalance();
+    }
+
+    /**
+     * Deposits the given amount to the account.
+     *
+     * @param date   the transaction date
+     * @param amount the amount to deposit
+     * @return the new balance of the account
+     */
+    public long deposit(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
+        return deposit(date, amount, null);
+    }
+
+    /**
+     * Hebt den gegebenen Betrag vom Konto ab.
+     *
+     * @param date   das Transaktionsdatum
+     * @param amount der abzuhebende Betrag
+     * @param text der Transaktionstext
+     * @return boolean <code>true</code>, falls die
+     * Abhebung erfolgreich war, andernfalls (z.B.
+     * bei negativem Betrag) <code>false</code>.
+     */
+    public long withdraw(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
+        if (amount <= 0)
+            throw new InvalidAmountException("amount must be greater than 0");
+
+        if (isInvalidTransaction(date))
+            throw new InvalidDateException("date mustn't be in the past");
+
+        // Achtung: hier Buchung mit negativem Betrag!
+        bookings.add(new Booking(date.toUnix(), -amount, text));
+
+        return getBalance();
     }
 
     /**
@@ -97,16 +130,32 @@ public abstract class Account {
      * bei negativem Betrag) <code>false</code>.
      */
     public long withdraw(Scheduled date, long amount) throws InvalidAmountException, InvalidDateException {
-        if (amount <= 0)
-            throw new InvalidAmountException("amount must be greater than 0");
+        return withdraw(date, amount, null);
+    }
 
-        if (isInvalidTransaction(date))
-            throw new InvalidDateException("date mustn't be in the past");
+    /**
+     * Returns a copy of bookings of an account
+     *
+     * @return a copy of the Bookings
+     */
+    public List<Booking> getBookings() {
+        return List.copyOf(bookings);
+    }
 
-        balance -= amount;
-        // Achtung: hier Buchung mit negativem Betrag!
-        bookings.add(new Booking(date.toUnix(), -amount));
+    /**
+     * Returns the transactions and balance of an account
+     *
+     * @return formatted string with transaction history and balance
+     */
+    public String printStatement() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#-------------------- Your Account --------------------#").append("\n");
+        for (Booking b : bookings) {
+            sb.append(Instant.ofEpochMilli(b.date())).append(" ").append(MoneyFormatter.toCHF(b.amount())).append(" ").append(b.text()).append("\n");
+        }
+        sb.append("#------------- Your Balance is: ").append(MoneyFormatter.toCHF(getBalance())).append("------------#").append("\n");
+        sb.append("#----------------------------------------------------#");
 
-        return balance;
+        return sb.toString();
     }
 }

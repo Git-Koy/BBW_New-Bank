@@ -1,3 +1,4 @@
+import ch.bbw.Bank;
 import ch.bbw.Scheduled;
 import ch.bbw.accounts.*;
 import ch.bbw.exceptions.InvalidAmountException;
@@ -58,9 +59,16 @@ public class BankTests {
      * Testet den Gesamtkontostand der Bank.
      */
     @Test
-    @DisplayName("Tests the balance of two SalaryAccounts from the Bank")
-    public void testBalance() {
-        fail("ToDo");
+    @DisplayName("Tests the balance of two SavingsAccounts from the Bank")
+    public void testBalance() throws InvalidDateException, InvalidAmountException {
+        Bank bank = new Bank();
+        String sav1 = bank.createSavingsAccount();
+        String sav2 = bank.createSavingsAccount();
+
+        bank.deposit(sav1, Scheduled.now(), 100);
+        bank.deposit(sav2, Scheduled.now(), 500);
+
+        assertEquals(600, bank.getBalance());
     }
 
     /**
@@ -68,17 +76,37 @@ public class BankTests {
      */
     @Test
     @DisplayName("Tests the List of the top 5 balances")
-    public void testTop5() {
-        fail("ToDo");
+    public void testTop5() throws InvalidDateException, InvalidAmountException {
+        Bank bank = new Bank();
+        for (int i = 1; i <= 6; i++) {
+            String id = bank.createSavingsAccount();
+            bank.deposit(id, Scheduled.now(), i * 100);
+        }
+
+        List<Account> top5 = bank.top5HighestBalances();
+
+        assertEquals(5, top5.size());
+        assertEquals(600, top5.get(0).getBalance());
+        assertEquals(200, top5.get(4).getBalance());
     }
 
     /**
-     * Tested die Ausgabe der "top 5" konten.
+     * Tested die Ausgabe der "bottom 5" konten.
      */
     @Test
     @DisplayName("Tests the List of the bottom 5 balances")
-    public void testBottom5() {
-        fail("ToDo");
+    public void testBottom5() throws InvalidDateException, InvalidAmountException {
+        Bank bank = new Bank();
+        for (int i = 1; i <= 6; i++) {
+            String id = bank.createSavingsAccount();
+            bank.deposit(id, Scheduled.now(), i * 100);
+        }
+
+        List<Account> bottom5 = bank.top5LowestBalances();
+
+        assertEquals(5, bottom5.size());
+        assertEquals(100, bottom5.get(0).getBalance());
+        assertEquals(500, bottom5.get(4).getBalance());
     }
 
     /**

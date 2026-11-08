@@ -158,4 +158,10 @@ public abstract class Account {
 
         return sb.toString();
     }
+
+    /**
+     * Returns the name of the account type.
+     * @return the name of the account type.
+     */
+    public abstract String getAccountType();
 }

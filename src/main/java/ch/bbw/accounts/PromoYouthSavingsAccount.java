@@ -62,4 +62,10 @@ public class PromoYouthSavingsAccount extends Account{
 
         return super.withdraw(date, amount, text);
     }
+
+    @Override
+    public String getAccountType() {
+        return "Promo Youth Savings Account";
+    }
+
 }

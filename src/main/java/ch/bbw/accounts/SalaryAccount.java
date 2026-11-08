@@ -46,5 +46,9 @@ public class SalaryAccount extends Account{
         return super.withdraw(date, amount, text);
     }
 
+    @Override
+    public String getAccountType() {
+        return "Salary Account";
+    }
 
 }

@@ -42,4 +42,9 @@ public class SavingsAccount extends Account
 
 		return super.withdraw(date, amount, text);
 	}
+
+	@Override
+	public String getAccountType() {
+		return "Savings Account";
+	}
 }

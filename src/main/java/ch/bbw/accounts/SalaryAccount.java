@@ -1,5 +1,6 @@
 package ch.bbw.accounts;
 
+import ch.bbw.MoneyFormatter;
 import ch.bbw.Scheduled;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
@@ -38,8 +39,8 @@ public class SalaryAccount extends Account{
 
     @Override
     public long withdraw(Scheduled date, long amount, String text ) throws IllegalArgumentException, InvalidDateException, InvalidAmountException {
-        if (getBalance() - amount >= creditLimit) {
-            throw new InvalidAmountException("Amount is greater than credit limit of CHF " + creditLimit);
+        if (getBalance() - amount < creditLimit) {
+            throw new InvalidAmountException("Amount is greater than credit limit of " + MoneyFormatter.toCHF(creditLimit));
         }
 
         return super.withdraw(date, amount, text);

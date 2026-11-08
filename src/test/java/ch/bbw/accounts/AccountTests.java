@@ -85,7 +85,7 @@ public class AccountTests {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
         sav1.deposit(Scheduled.now(), 15,   "This is a test text");
         sav1.withdraw(Scheduled.now(), 13,  "This is a test text");
-        System.out.println("Your balance is:" + sav1.getBalance());
+        System.out.println("Your balance is " + MoneyFormatter.toCHF(sav1.getBalance()));
     }
 
     /**

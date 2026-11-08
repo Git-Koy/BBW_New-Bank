@@ -61,7 +61,7 @@ public class SalaryAccountTests
 		sal1.withdraw(Scheduled.now(), 12, "This is a test text");
 
 		assertEquals(0, sal1.getBalance());
-		assertThrows(IllegalArgumentException.class, () -> {sal1.withdraw(Scheduled.now(), 1, "This is a test text");});
+		assertThrows(InvalidAmountException.class, () -> {sal1.withdraw(Scheduled.now(), 1, "This is a test text");});
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class SalaryAccountTests
 	public void testRejectedWithdrawalLeavesBookingListUntouched() throws InvalidDateException, InvalidAmountException {
 		SalaryAccount sal1 = new SalaryAccount("CH-01", -12);
 		assertEquals(0, sal1.getBookings().size());
-		assertThrows(IllegalArgumentException.class, () -> {sal1.withdraw(Scheduled.now(), 13, "This is a test text");});
+		assertThrows(InvalidAmountException.class, () -> {sal1.withdraw(Scheduled.now(), 13, "This is a test text");});
 		assertEquals(0, sal1.getBookings().size());
 	}
 

@@ -2,7 +2,7 @@
 
 Personal tracking file — what's actually done in the code vs. what each exercise still asks for.
 Last checked against the code: 2026-11-08 (no `fail("ToDo")` left,
-`./mvnw clean test` → `Tests run: 49, Failures: 0, Errors: 0`).
+`./mvnw clean test` → `Tests run: 56, Failures: 0, Errors: 0`).
 
 Update this file whenever you finish a task below — that's the whole point of it.
 
@@ -47,10 +47,14 @@ task. Write the test, watch it fail (`./mvnw test`), then implement just enough 
 
 ## Sprint 5 — Singleton ([`docs/exercises/05-Exercise-singleton-pattern.md`](docs/exercises/05-Exercise-singleton-pattern.md))
 
-- [ ] Tests written first: identity (`assertSame`), constructor-not-public (reflection), state-isolation test (see the brief's note on why this one may pass trivially at first).
-- [ ] `Bank` constructor made `private`; `public static Bank getInstance()` added.
-- [ ] All call sites (`new Bank()` → `Bank.getInstance()`) updated, including existing tests.
-- [ ] Eager vs. lazy-synchronized vs. other implementation compared and one chosen, with reasoning.
+- [x] Tests written first: identity (`assertSame`), constructor-not-public (reflection), state-isolation test (see the brief's note on why this one may pass trivially at first).
+- [x] `Bank` constructor no longer public; `public static Bank getInstance()` added (holder idiom).
+- [x] All call sites (`new Bank()` → `Bank.getInstance()`) updated, including existing tests.
+- [x] Eager vs. lazy-synchronized vs. holder compared in the JavaDoc of `getInstance()`, holder chosen, double-checked locking without `volatile` explained.
+- [x] Tests isolated again with `Bank.reset()` in a `@BeforeEach`, labelled as a workaround and code smell.
+- [x] `AccountFactory` injected into `Bank` through the constructor; `AccountFactory(long startId)` lets tests pin the ids.
+- [x] Arguments for and against the singleton in the class JavaDoc of `Bank`.
+- [x] `./mvnw test` passes twice in a row.
 
 ## Sprints 6–11 — Spring Boot backend ([`docs/exercises/10-Exercise-build-the-be.md`](docs/exercises/10-Exercise-build-the-be.md))
 
@@ -69,7 +73,7 @@ tests for it when its sprint comes around (or now, if you want to lock in the be
 ## How to re-check this file's accuracy
 
 ```bash
-./mvnw clean test   # should read "Tests run: 49, Failures: 0" — more tests are fine, failures are not
+./mvnw clean test   # should read "Tests run: 56, Failures: 0" — more tests are fine, failures are not
 ```
 
 Grep for stub markers to see which test methods still need writing:

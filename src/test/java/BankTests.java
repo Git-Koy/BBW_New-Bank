@@ -4,6 +4,7 @@ import ch.bbw.Scheduled;
 import ch.bbw.accounts.*;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,13 +21,21 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BankTests {
     /**
+     * Empties the bank before every test. Workaround, because all tests share the same singleton bank
+     */
+    @BeforeEach
+    public void setUp() {
+        Bank.reset();
+    }
+
+    /**
      * Creates two savings accounts through the bank and checks the ids
      * @throws InvalidAmountException
      */
     @Test
     @DisplayName("Constructor Test, creates two SavingsAccounts")
     public void testCreate() throws InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         String sav2 = bank.createSavingsAccount();
 
@@ -45,7 +54,7 @@ public class BankTests {
     @Test
     @DisplayName("Simple deposit on Bank-SavingsAccount should work")
     public void testDeposit() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
 
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
@@ -62,7 +71,7 @@ public class BankTests {
     @Test
     @DisplayName("Simple withdraw on Bank-SavingsAccount should work")
     public void testWithdraw() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
 
@@ -79,7 +88,7 @@ public class BankTests {
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
     public void testPrint() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
         bank.withdraw(sav1, Scheduled.now(), 13, "This is a test text");
@@ -95,7 +104,7 @@ public class BankTests {
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
     public void testMonthlyPrint() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
         bank.withdraw(sav1, Scheduled.now(), 13, "This is a test text");
@@ -109,7 +118,7 @@ public class BankTests {
     @Test
     @DisplayName("Tests the balance of two SavingsAccounts from the Bank")
     public void testBalance() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         String sav1 = bank.createSavingsAccount();
         String sav2 = bank.createSavingsAccount();
 
@@ -125,7 +134,7 @@ public class BankTests {
     @Test
     @DisplayName("Tests the List of the top 5 balances")
     public void testTop5() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         for (int i = 1; i <= 6; i++) {
             String id = bank.createSavingsAccount();
             bank.deposit(id, Scheduled.now(), i * 100);
@@ -144,7 +153,7 @@ public class BankTests {
     @Test
     @DisplayName("Tests the List of the bottom 5 balances")
     public void testBottom5() throws InvalidDateException, InvalidAmountException {
-        Bank bank = new Bank();
+        Bank bank = Bank.getInstance();
         for (int i = 1; i <= 6; i++) {
             String id = bank.createSavingsAccount();
             bank.deposit(id, Scheduled.now(), i * 100);
@@ -181,6 +190,40 @@ public class BankTests {
         }
 
         assertEquals(45, total);
+    }
+
+    /**
+     * The bank starts empty and a deposit only shows up in this test. Together with testIsolationSecond it checks that the order of the tests doesn't matter
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
+    @Test
+    @DisplayName("A deposit not leaking into another test should work")
+    public void testIsolationFirst() throws InvalidDateException, InvalidAmountException {
+        Bank bank = Bank.getInstance();
+        assertEquals(0, bank.getBalance());
+
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
+
+        assertEquals(15, bank.getBalance());
+    }
+
+    /**
+     * The bank starts empty and a deposit only shows up in this test. Together with testIsolationFirst it checks that the order of the tests doesn't matter
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
+    @Test
+    @DisplayName("A deposit from another test not showing up should work")
+    public void testIsolationSecond() throws InvalidDateException, InvalidAmountException {
+        Bank bank = Bank.getInstance();
+        assertEquals(0, bank.getBalance());
+
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 20, "This is a test text");
+
+        assertEquals(20, bank.getBalance());
     }
 
 }

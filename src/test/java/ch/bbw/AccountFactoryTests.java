@@ -84,6 +84,18 @@ public class AccountFactoryTests {
     }
 
     /**
+     * The factory starts the ids at the given number
+     */
+    @Test
+    @DisplayName("Starting the ids at a given number should work")
+    public void testStartId() {
+        AccountFactory accountFactory = new AccountFactory(5000);
+
+        assertEquals("S-5000", accountFactory.createSavingsAccount().getId());
+        assertEquals("Y-5001", accountFactory.createPromoYouthSavingsAccount().getId());
+    }
+
+    /**
      * The ids stay unique over 1000 creations of each account type
      */
     @Test

@@ -183,4 +183,38 @@ public class BankTests {
         assertEquals(45, total);
     }
 
+    /**
+     * The bank starts empty and a deposit only shows up in this test. Together with testIsolationSecond it checks that the order of the tests doesn't matter
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
+    @Test
+    @DisplayName("A deposit not leaking into another test should work")
+    public void testIsolationFirst() throws InvalidDateException, InvalidAmountException {
+        Bank bank = Bank.getInstance();
+        assertEquals(0, bank.getBalance());
+
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 15, "This is a test text");
+
+        assertEquals(15, bank.getBalance());
+    }
+
+    /**
+     * The bank starts empty and a deposit only shows up in this test. Together with testIsolationFirst it checks that the order of the tests doesn't matter
+     * @throws InvalidDateException
+     * @throws InvalidAmountException
+     */
+    @Test
+    @DisplayName("A deposit from another test not showing up should work")
+    public void testIsolationSecond() throws InvalidDateException, InvalidAmountException {
+        Bank bank = Bank.getInstance();
+        assertEquals(0, bank.getBalance());
+
+        String sav1 = bank.createSavingsAccount();
+        bank.deposit(sav1, Scheduled.now(), 20, "This is a test text");
+
+        assertEquals(20, bank.getBalance());
+    }
+
 }

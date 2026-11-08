@@ -2,24 +2,27 @@ package ch.bbw;
 
 import ch.bbw.accounts.*;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * Account factory. It is the only place that decides which account type gets created and which id it gets, so Bank never needs to know the concrete account classes.
  * This is a simple factory (one class with a switch) and not the Factory Method pattern, where every account type would have its own creator subclass.
+ * All account types share one id counter (S-1000, Y-1001, P-1002), so the number alone is already unique and an account can't be mixed up with another type.
  *
  * @author Cedric Caviezel, cedric.caviezel@stud.kbw.ch
  * @version 1.0
  */
 public class AccountFactory {
     /**
-     * Next account id.
+     * Next account id. It is an AtomicLong, so two threads can never get the same id.
      */
-    private long nextAccountId;
+    private final AtomicLong nextAccountId;
 
     /**
      * Creates a new account factory, the ids start at 1000
      */
     public AccountFactory() {
-        this.nextAccountId = 1000;
+        this.nextAccountId = new AtomicLong(1000);
     }
 
     /**
@@ -36,7 +39,7 @@ public class AccountFactory {
             throw new IllegalArgumentException("Account type can't be null");
         }
 
-        String id = type.getPrefix() + "-" + nextAccountId++;
+        String id = type.getPrefix() + "-" + nextAccountId.getAndIncrement();
 
         return switch (type) {
             case SAVINGS -> new SavingsAccount(id);

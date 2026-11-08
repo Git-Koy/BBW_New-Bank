@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -19,10 +18,22 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @version 1.0
  */
 public class BankTests {
+    /**
+     * Creates two savings accounts through the bank and checks the ids
+     * @throws InvalidAmountException
+     */
     @Test
     @DisplayName("Constructor Test, creates two SavingsAccounts")
-    public void testCreate() {
-        fail("ToDo");
+    public void testCreate() throws InvalidAmountException {
+        Bank bank = new Bank();
+        String sav1 = bank.createSavingsAccount();
+        String sav2 = bank.createSavingsAccount();
+
+        assertNotNull(sav1);
+        assertNotNull(sav2);
+        assertNotEquals(sav1, sav2);
+        assertEquals(sav1, bank.getAccount(sav1).getId());
+        assertEquals(sav2, bank.getAccount(sav2).getId());
     }
 
     @Test

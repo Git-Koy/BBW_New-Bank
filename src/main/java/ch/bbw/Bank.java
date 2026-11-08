@@ -258,14 +258,14 @@ public class Bank {
      *
      * @param id the account id
      * @return Returns the account.
-     * @throws InvalidAmountException if no account with this id exists
+     * @throws AccountNotFoundException if no account with this id exists
      */
     public Account getAccount(String id) throws InvalidAmountException {
 
         var account = Optional.ofNullable(accounts.get(id));
 
         if (account.isEmpty()) {
-            throw new InvalidAmountException("Invalid bank id");
+            throw new AccountNotFoundException(id);
         }
 
         return account.get();

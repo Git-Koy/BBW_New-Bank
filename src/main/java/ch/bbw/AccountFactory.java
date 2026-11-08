@@ -22,7 +22,16 @@ public class AccountFactory {
      * Creates a new account factory, the ids start at 1000
      */
     public AccountFactory() {
-        this.nextAccountId = new AtomicLong(1000);
+        this(1000);
+    }
+
+    /**
+     * Creates a new account factory, so tests can choose the first id they expect
+     *
+     * @param startId the first account id
+     */
+    public AccountFactory(long startId) {
+        this.nextAccountId = new AtomicLong(startId);
     }
 
     /**

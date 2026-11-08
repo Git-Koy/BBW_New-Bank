@@ -23,18 +23,21 @@ public class Bank {
     private final TreeMap<String, Account> accounts;
     private final AccountFactory accountFactory;
     /**
-     * Initialisiert eine neue Bank. It is private, so the only bank comes from getInstance().
+     * Initialisiert eine neue Bank. The account factory is injected instead of created here, so a test can pass a factory with a known start id.
+     * It is package-private and not public, so outside of ch.bbw the only bank comes from getInstance().
+     *
+     * @param accountFactory the factory that creates the accounts
      */
-    private Bank() {
+    Bank(AccountFactory accountFactory) {
         this.accounts = new TreeMap<String, Account>();
-        accountFactory = new AccountFactory();
+        this.accountFactory = accountFactory;
     }
 
     /**
      * Holds the only bank. The JVM loads this class the first time getInstance() is called.
      */
     private static class Holder {
-        static final Bank INSTANCE = new Bank();
+        static final Bank INSTANCE = new Bank(new AccountFactory());
     }
 
     /**

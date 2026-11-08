@@ -4,8 +4,11 @@ import ch.bbw.accounts.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -159,5 +162,33 @@ public class AccountFactoryTests {
         AccountFactory accountFactory = new AccountFactory();
 
         assertThrows(IllegalArgumentException.class, () -> {accountFactory.create(null, 0);});
+    }
+
+    /**
+     * The ids stay unique when many threads create accounts at the same time
+     * @throws InterruptedException
+     */
+    @Test
+    @DisplayName("Ids being unique when creating accounts from many threads should work")
+    public void testUniqueIdsWithThreads() throws InterruptedException {
+        AccountFactory accountFactory = new AccountFactory();
+        Set<String> ids = ConcurrentHashMap.newKeySet();
+        List<Thread> threads = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            Thread thread = new Thread(() -> {
+                for (int j = 0; j < 10_000; j++) {
+                    ids.add(accountFactory.createSavingsAccount().getId());
+                }
+            });
+            threads.add(thread);
+            thread.start();
+        }
+
+        for (Thread thread : threads) {
+            thread.join();
+        }
+
+        assertEquals(100_000, ids.size());
     }
 }

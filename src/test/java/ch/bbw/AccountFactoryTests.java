@@ -97,4 +97,67 @@ public class AccountFactoryTests {
 
         assertEquals(3000, ids.size());
     }
+
+    /**
+     * create() returns the right account type for every type in AccountType
+     */
+    @Test
+    @DisplayName("Creating every account type through create() should work")
+    public void testCreateEveryType() {
+        AccountFactory accountFactory = new AccountFactory();
+
+        assertTrue(accountFactory.create(AccountType.SAVINGS, 0) instanceof SavingsAccount);
+        assertTrue(accountFactory.create(AccountType.PROMO_YOUTH, 0) instanceof PromoYouthSavingsAccount);
+        assertTrue(accountFactory.create(AccountType.SALARY, -50_000) instanceof SalaryAccount);
+    }
+
+    /**
+     * create() builds the id with the prefix of the account type
+     */
+    @Test
+    @DisplayName("create() using the prefix of the account type should work")
+    public void testCreateUsesPrefix() {
+        AccountFactory accountFactory = new AccountFactory();
+
+        for (AccountType type : AccountType.values()) {
+            Account account = accountFactory.create(type, 0);
+
+            assertTrue(account.getId().startsWith(type.getPrefix() + "-"));
+        }
+    }
+
+    /**
+     * create() passes the credit limit to the salary account
+     */
+    @Test
+    @DisplayName("The credit limit reaching the SalaryAccount through create() should work")
+    public void testCreateCreditLimitReachesSalaryAccount() {
+        AccountFactory accountFactory = new AccountFactory();
+        Account sal1 = accountFactory.create(AccountType.SALARY, -50_000);
+
+        assertTrue(sal1 instanceof SalaryAccount);
+        assertEquals(-50_000, ((SalaryAccount) sal1).getCreditLimit());
+    }
+
+    /**
+     * create() rejects a positive credit limit for a salary account
+     */
+    @Test
+    @DisplayName("A positive credit limit will be rejected by create()")
+    public void testCreateRejectPositiveCreditLimit() {
+        AccountFactory accountFactory = new AccountFactory();
+
+        assertThrows(IllegalArgumentException.class, () -> {accountFactory.create(AccountType.SALARY, 50_000);});
+    }
+
+    /**
+     * create() rejects a missing account type
+     */
+    @Test
+    @DisplayName("A missing account type will be rejected by create()")
+    public void testCreateRejectNullType() {
+        AccountFactory accountFactory = new AccountFactory();
+
+        assertThrows(IllegalArgumentException.class, () -> {accountFactory.create(null, 0);});
+    }
 }

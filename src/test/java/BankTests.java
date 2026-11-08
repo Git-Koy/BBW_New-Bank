@@ -2,6 +2,7 @@ import ch.bbw.Bank;
 import ch.bbw.MoneyFormatter;
 import ch.bbw.Scheduled;
 import ch.bbw.accounts.*;
+import ch.bbw.exceptions.AccountNotFoundException;
 import ch.bbw.exceptions.InvalidAmountException;
 import ch.bbw.exceptions.InvalidDateException;
 import org.junit.jupiter.api.BeforeEach;
@@ -224,6 +225,18 @@ public class BankTests {
         bank.deposit(sav1, Scheduled.now(), 20, "This is a test text");
 
         assertEquals(20, bank.getBalance());
+    }
+
+    /**
+     * An unknown account id throws an AccountNotFoundException, which is still an InvalidAmountException
+     */
+    @Test
+    @DisplayName("Getting an unknown account throwing AccountNotFoundException should work")
+    public void testUnknownAccount() {
+        Bank bank = Bank.getInstance();
+
+        assertThrows(AccountNotFoundException.class, () -> {bank.getAccount("S-9999");});
+        assertThrows(InvalidAmountException.class, () -> {bank.getAccount("S-9999");});
     }
 
 }

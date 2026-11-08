@@ -85,7 +85,8 @@ public class AccountTests {
         SavingsAccount sav1 = new SavingsAccount("CH-01");
         sav1.deposit(Scheduled.now(), 15,   "This is a test text");
         sav1.withdraw(Scheduled.now(), 13,  "This is a test text");
-        System.out.println("Your balance is:" + sav1.getBalance());
+        System.out.println(sav1.printStatement());
+        assertTrue(sav1.printStatement().contains("CHF 0.00002"));
     }
 
     /**
@@ -182,5 +183,17 @@ public class AccountTests {
         assertEquals("CHF 1.23456", MoneyFormatter.toCHF(123456));
         assertEquals("CHF 1.00001", MoneyFormatter.toCHF(100001));
         assertEquals("CHF -1.00001", MoneyFormatter.toCHF(-100001));
+    }
+
+    @Test
+    @DisplayName("Tests if the account type shows up correctly")
+    public void testAccountType() {
+        Account sav1 = new SavingsAccount("CH-01");
+        Account sal1 = new SalaryAccount("CH-02", -10);
+        Account pys1 = new PromoYouthSavingsAccount("CH-03");
+
+        assertEquals("Savings Account", sav1.getAccountType());
+        assertEquals("Salary Account", sal1.getAccountType());
+        assertEquals("Promo Youth Savings Account", pys1.getAccountType());
     }
 }

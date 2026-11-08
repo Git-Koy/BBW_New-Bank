@@ -30,10 +30,9 @@ public class SavingsAccount extends Account
 	 * @param amount der abzuhebende Betrag
 	 * @param text der Transaktionstext
 	 *
-	 * @return boolean <code>true</code>, falls die
-	 * Abhebung erfolgreich war, andernfalls (z.B.
-	 * bei negativem Betrag, oder nicht gen�gend
-	 * Saldo) <code>false</code>.
+	 * @return der neue Saldo
+	 * @throws InvalidAmountException if the amount is 0, negative or greater than the balance
+	 * @throws InvalidDateException if the date is in the past
 	 */
 	@Override
 	public long withdraw(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
@@ -43,6 +42,11 @@ public class SavingsAccount extends Account
 		return super.withdraw(date, amount, text);
 	}
 
+	/**
+	 * Returns the name of the account type.
+	 *
+	 * @return "Savings Account"
+	 */
 	@Override
 	public String getAccountType() {
 		return "Savings Account";

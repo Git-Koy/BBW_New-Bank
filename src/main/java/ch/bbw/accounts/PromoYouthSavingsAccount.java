@@ -31,13 +31,13 @@ public class PromoYouthSavingsAccount extends SavingsAccount{
     }
 
     /**
-     * Withdraw has a limit of CHF 200 that cannot be exceeded
+     * Withdraw has a limit of CHF 200 per month that cannot be exceeded, all withdrawals of the same month count together
      * @param date   das Transaktionsdatum
      * @param amount der abzuhebende Betrag
      * @param text der Transaktionstext
-     * @return
-     * @throws InvalidAmountException
-     * @throws InvalidDateException
+     * @return der neue Saldo
+     * @throws InvalidAmountException if the amount is 0, negative, greater than the balance or over the monthly limit
+     * @throws InvalidDateException if the date is in the past
      */
     @Override
     public long withdraw(Scheduled date, long amount, String text) throws InvalidAmountException, InvalidDateException {
@@ -60,6 +60,11 @@ public class PromoYouthSavingsAccount extends SavingsAccount{
         return super.withdraw(date, amount, text);
     }
 
+    /**
+     * Returns the name of the account type
+     *
+     * @return "Promo Youth Savings Account"
+     */
     @Override
     public String getAccountType() {
         return "Promo Youth Savings Account";

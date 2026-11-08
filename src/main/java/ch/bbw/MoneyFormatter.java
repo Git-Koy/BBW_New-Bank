@@ -1,6 +1,18 @@
 package ch.bbw;
 
+/**
+ * Formats amounts in millirappen as readable CHF amounts
+ *
+ * @author Kay Ježek, kay@jeschis.ch
+ * @version 1.0
+ */
 public class MoneyFormatter {
+    /**
+     * Formats an amount in millirappen, for example 123456 becomes "CHF 1.23456"
+     *
+     * @param millirappen the amount in millirappen, can be negative
+     * @return the formatted amount with all 5 decimal places
+     */
     public static String toCHF(long millirappen) {
         String sign = millirappen < 0 ? "-" : "";
         long absolute = Math.abs(millirappen);

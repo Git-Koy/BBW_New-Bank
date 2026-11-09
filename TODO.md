@@ -65,10 +65,6 @@ task. Write the test, watch it fail (`./mvnw test`), then implement just enough 
 - [x] Every test class has at least 5 tests with `assert`; every method in `src/main` has JavaDoc.
 - [x] `.gitignore` complete, unused `HELP.md` removed.
 
-## Sprints 6–11 — Spring Boot backend ([`docs/exercises/10-Exercise-build-the-be.md`](docs/exercises/10-Exercise-build-the-be.md))
-
-- [ ] Not started — comes after Sprint 5.
-
 ## Untracked / extra work already in the code
 
 Not requested by any exercise above yet, has no test coverage — decide whether to keep, and add

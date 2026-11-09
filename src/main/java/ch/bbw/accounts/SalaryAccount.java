@@ -23,6 +23,7 @@ public class SalaryAccount extends Account{
      *
      * @param id the account number
      * @param creditLimit the credit limit
+     * @throws IllegalArgumentException if the credit limit is positive
      */
     public SalaryAccount(String id, long creditLimit)
     {
@@ -54,7 +55,7 @@ public class SalaryAccount extends Account{
      * @throws InvalidDateException if the date is in the past
      */
     @Override
-    public long withdraw(Scheduled date, long amount, String text ) throws IllegalArgumentException, InvalidDateException, InvalidAmountException {
+    public long withdraw(Scheduled date, long amount, String text ) throws InvalidDateException, InvalidAmountException {
         if (getBalance() - amount < creditLimit) {
             throw new InvalidAmountException("Amount is greater than credit limit of " + MoneyFormatter.toCHF(creditLimit));
         }

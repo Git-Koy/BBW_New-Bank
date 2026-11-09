@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * <p>
  * Startet den eingebetteten Webserver auf <code>localhost:8080</code>:
  * <pre>./mvnw spring-boot:run</pre>
- * </p>
  *
  * <p>
  * Die Annotation {@code @SpringBootApplication} aktiviert das Component-Scanning
@@ -23,6 +22,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class NewBankApplication {
+
+	/**
+	 * Creates a new application, Spring Boot calls this when it starts
+	 */
+	public NewBankApplication() {
+	}
 
 	/**
 	 * Starts the Spring Boot application

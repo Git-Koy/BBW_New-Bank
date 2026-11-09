@@ -25,8 +25,8 @@ public class Scheduled {
     }
 
     /**
-     * Checks if the transaction date is not in the past.
-     * @return true if the transaction date is not in the past.
+     * Checks if the transaction date is in the past.
+     * @return true if the transaction date is in the past.
      */
     public boolean isPastDue() {
         return millisecondsUntilDue < 0;

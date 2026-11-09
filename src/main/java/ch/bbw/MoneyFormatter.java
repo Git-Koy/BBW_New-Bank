@@ -8,6 +8,12 @@ package ch.bbw;
  */
 public class MoneyFormatter {
     /**
+     * Creates a new money formatter, not needed because toCHF() is static
+     */
+    public MoneyFormatter() {
+    }
+
+    /**
      * Formats an amount in millirappen, for example 123456 becomes "CHF 1.23456"
      *
      * @param millirappen the amount in millirappen, can be negative

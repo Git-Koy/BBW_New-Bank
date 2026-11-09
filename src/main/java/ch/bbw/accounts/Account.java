@@ -57,10 +57,10 @@ public abstract class Account {
     }
 
     /**
-     * Checks if the transaction date is not in the past.
+     * Checks if the transaction date is in the past.
      *
      * @param date the transaction date
-     * @return whether the transaction date is valid
+     * @return true if the date is in the past and the transaction is invalid
      */
     public boolean isInvalidTransaction(Scheduled date) {
         return date.isPastDue();

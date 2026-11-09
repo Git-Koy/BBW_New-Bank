@@ -20,9 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SavingsAccountTests
 {
 	/**
+	 * Creates a new instance of the test class, JUnit creates one for every test
+	 */
+	public SavingsAccountTests()
+	{
+	}
+
+	/**
 	 * Tests the initialization of a savings account and a simple deposit
-	 * @throws InvalidAmountException
-	 * @throws InvalidDateException
+	 * @throws InvalidAmountException if an amount is not allowed
+	 * @throws InvalidDateException if a transaction date is in the past
 	 */
 	@Test
 	@DisplayName("Constructs a SavingsAccount and tests a simple deposit")
@@ -36,8 +43,8 @@ public class SavingsAccountTests
 
 	/**
 	 * Tests if withdrawing the exact balance suceedes and withdrawing more than the balance fails
-	 * @throws InvalidAmountException
-	 * @throws InvalidDateException
+	 * @throws InvalidAmountException if an amount is not allowed
+	 * @throws InvalidDateException if a transaction date is in the past
 	 */
 	@Test
 	@DisplayName("Withdrawing the exact balance succeeds, 1 millirapen above and it fails")
@@ -67,8 +74,8 @@ public class SavingsAccountTests
 
 	/**
 	 * Withdrawing 0 or a negative amount is rejected
-	 * @throws InvalidAmountException
-	 * @throws InvalidDateException
+	 * @throws InvalidAmountException if an amount is not allowed
+	 * @throws InvalidDateException if a transaction date is in the past
 	 */
 	@Test
 	@DisplayName("Withdrawing 0 or a negative amount fails")
@@ -84,8 +91,8 @@ public class SavingsAccountTests
 
 	/**
 	 * Withdrawing with a date in the past is rejected
-	 * @throws InvalidAmountException
-	 * @throws InvalidDateException
+	 * @throws InvalidAmountException if an amount is not allowed
+	 * @throws InvalidDateException if a transaction date is in the past
 	 */
 	@Test
 	@DisplayName("Withdrawing with a date in the past fails")

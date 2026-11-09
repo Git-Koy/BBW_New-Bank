@@ -17,6 +17,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AccountTypeTests {
     /**
+     * Creates a new instance of the test class, JUnit creates one for every test
+     */
+    public AccountTypeTests() {
+    }
+
+    /**
      * Every account type has the right prefix
      */
     @Test

@@ -18,9 +18,15 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class PromoYouthSavingsAccountTests {
     /**
+     * Creates a new instance of the test class, JUnit creates one for every test
+     */
+    public PromoYouthSavingsAccountTests() {
+    }
+
+    /**
      * There is a withdrawal limit of CHF 200 per month
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("The monthly withdrawal limit works")
@@ -35,8 +41,8 @@ public class PromoYouthSavingsAccountTests {
 
     /**
      * The monthly limit counts all withdrawals of the month together
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("The monthly limit over several withdrawals works")
@@ -52,8 +58,8 @@ public class PromoYouthSavingsAccountTests {
 
     /**
      * The monthly limit starts again in the next month
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("The monthly limit starting again in the next month works")
@@ -68,8 +74,8 @@ public class PromoYouthSavingsAccountTests {
 
     /**
      * A promo youth savings account can't be overdrawn, a rejected withdrawal adds no booking
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("A promo youth savings account can't be overdrawn")

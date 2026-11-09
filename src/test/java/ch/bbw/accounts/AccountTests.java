@@ -23,6 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AccountTests {
     /**
+     * Creates a new instance of the test class, JUnit creates one for every test
+     */
+    public AccountTests() {
+    }
+
+    /**
      * Tested die Initialisierung eines Kontos.
      */
     @Test
@@ -35,6 +41,8 @@ public class AccountTests {
 
     /**
      * Testet das Einzahlen auf ein Konto.
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Simple deposit on SavingsAccount should work")
@@ -51,6 +59,8 @@ public class AccountTests {
 
     /**
      * Testet das Abheben von einem Konto.
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Simple withdraw from SavingsAccount should work")
@@ -67,8 +77,8 @@ public class AccountTests {
 
     /**
      * Two accounts in a TreeMap are found again by their id and are still the same objects
-     * @throws InvalidAmountException
-     * @throws InvalidDateException
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("TreeMap of two Account-References should work")
@@ -102,6 +112,8 @@ public class AccountTests {
 
     /**
      * Experimente mit print().
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Not a real test, it prints a list of bookings")
@@ -114,7 +126,9 @@ public class AccountTests {
     }
 
     /**
-     * Experimente mit print(year,month).
+     * Prints the balance after a deposit and a withdrawal and checks that it is correct
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Not a real test, it prints a list of bookings")
@@ -128,6 +142,8 @@ public class AccountTests {
 
     /**
      * Tests if a new account has a balance of 0
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Account starting with a balance of 0 should work")
@@ -139,6 +155,8 @@ public class AccountTests {
 
     /**
      * Tests if the balance after n operations equals the sum of the booking amounts
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Sum of booking amount equaling sum of operations should work")
@@ -160,6 +178,8 @@ public class AccountTests {
 
     /**
      * Makes sure that getBookings() cannot be used to modify the account
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Account being unable to be edited by getBookings() should work")
@@ -172,6 +192,8 @@ public class AccountTests {
 
     /**
      * A rejected operation should add no booking and leave the balance unchanged
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Rejected operations leaving the balance and bookings unchanged should work")
@@ -188,6 +210,8 @@ public class AccountTests {
 
     /**
      * Tests if a transaction fails if the amount is greater than the balance of a SavingsAccount
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("The amount of a transaction not being allowed to be greater than the balance of a SavingsAccount should work")
@@ -201,6 +225,8 @@ public class AccountTests {
 
     /**
      * Tests if the formating of currency works
+     * @throws InvalidAmountException if an amount is not allowed
+     * @throws InvalidDateException if a transaction date is in the past
      */
     @Test
     @DisplayName("Formatting currency should work")
@@ -210,6 +236,9 @@ public class AccountTests {
         assertEquals("CHF -1.00001", MoneyFormatter.toCHF(-100001));
     }
 
+    /**
+     * Tests if the account types show up correctly with getAccountType()
+     */
     @Test
     @DisplayName("Tests if the account type shows up correctly")
     public void testAccountType() {

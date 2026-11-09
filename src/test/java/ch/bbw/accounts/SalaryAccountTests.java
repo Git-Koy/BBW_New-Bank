@@ -23,7 +23,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SalaryAccountTests
 {
 	/**
+	 * Creates a new instance of the test class, JUnit creates one for every test
+	 */
+	public SalaryAccountTests()
+	{
+	}
+
+	/**
 	 * Tests if a salary account can be created and also tests a simple deposit
+	 * @throws InvalidDateException if a transaction date is in the past
+	 * @throws InvalidAmountException if an amount is not allowed
 	 */
 	@Test
 	@DisplayName("Constructs a SalaryAccount and tests a simple deposit")
@@ -36,9 +45,9 @@ public class SalaryAccountTests
 	}
 
 	/**
-	 * Withdrawing down to the credit limit works, but withdrawing more throws IllegalArgumentException. After withdrawing under 0, the balance is negative.
-	 * @throws InvalidDateException
-	 * @throws InvalidAmountException
+	 * Withdrawing down to the credit limit works, but withdrawing more throws InvalidAmountException. After withdrawing under 0, the balance is negative.
+	 * @throws InvalidDateException if a transaction date is in the past
+	 * @throws InvalidAmountException if an amount is not allowed
 	 */
 	@Test
 	@DisplayName("Withdrawing down to the credit limit suceeds, one more and it throws and the balance afterwards is negative")
@@ -53,8 +62,8 @@ public class SalaryAccountTests
 
 	/**
 	 * An account that has a credit limit of 0 works like a savings account.
-	 * @throws InvalidDateException
-	 * @throws InvalidAmountException
+	 * @throws InvalidDateException if a transaction date is in the past
+	 * @throws InvalidAmountException if an amount is not allowed
 	 */
 	@Test
 	@DisplayName("An Account with credit limit 0 works like a savings account")
@@ -69,8 +78,8 @@ public class SalaryAccountTests
 
 	/**
 	 * A rejected withdrawl leaves the booking list untouched.
-	 * @throws InvalidDateException
-	 * @throws InvalidAmountException
+	 * @throws InvalidDateException if a transaction date is in the past
+	 * @throws InvalidAmountException if an amount is not allowed
 	 */
 	@Test
 	@DisplayName("A rejected withdrawal leaves the booking list untouched")
@@ -83,8 +92,8 @@ public class SalaryAccountTests
 
 	/**
 	 * A positive credit limit will be rejected
-	 * @throws InvalidDateException
-	 * @throws InvalidAmountException
+	 * @throws InvalidDateException if a transaction date is in the past
+	 * @throws InvalidAmountException if an amount is not allowed
 	 */
 	@Test
 	@DisplayName("A positive credit limit will be rejected")

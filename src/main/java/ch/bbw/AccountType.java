@@ -7,8 +7,17 @@ package ch.bbw;
  * @version 1.0
  */
 public enum AccountType {
+    /**
+     * Savings account, the account id starts with S
+     */
     SAVINGS("S"),
+    /**
+     * Promo youth savings account, the account id starts with Y
+     */
     PROMO_YOUTH("Y"),
+    /**
+     * Salary account, the account id starts with P
+     */
     SALARY("P");
 
     /**

@@ -21,6 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BookingTests
 {
 	/**
+	 * Creates a new instance of the test class, JUnit creates one for every test
+	 */
+	public BookingTests()
+	{
+	}
+
+	/**
 	 * Tests f�r die Erzeugung von Buchungen.
 	 */
 	@Test

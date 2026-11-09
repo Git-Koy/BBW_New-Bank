@@ -21,6 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class AccountFactoryTests {
     /**
+     * Creates a new instance of the test class, JUnit creates one for every test
+     */
+    public AccountFactoryTests() {
+    }
+
+    /**
      * The factory creates a savings account with the prefix S-
      */
     @Test
@@ -178,7 +184,7 @@ public class AccountFactoryTests {
 
     /**
      * The ids stay unique when many threads create accounts at the same time
-     * @throws InterruptedException
+     * @throws InterruptedException if a thread is interrupted while waiting
      */
     @Test
     @DisplayName("Ids being unique when creating accounts from many threads should work")

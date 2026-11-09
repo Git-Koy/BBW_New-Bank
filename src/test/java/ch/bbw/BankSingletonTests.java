@@ -16,6 +16,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BankSingletonTests {
     /**
+     * Creates a new instance of the test class, JUnit creates one for every test
+     */
+    public BankSingletonTests() {
+    }
+
+    /**
      * getInstance() always returns the same bank
      */
     @Test
@@ -51,8 +57,8 @@ public class BankSingletonTests {
 
     /**
      * A bank created with the constructor is independent from the singleton bank
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("A bank from the constructor being independent from the singleton should work")
@@ -68,8 +74,8 @@ public class BankSingletonTests {
 
     /**
      * reset() removes all accounts from the singleton bank
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("reset() emptying the bank should work")

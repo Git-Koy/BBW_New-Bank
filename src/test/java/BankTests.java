@@ -21,6 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class BankTests {
     /**
+     * Creates a new instance of the test class, JUnit creates one for every test
+     */
+    public BankTests() {
+    }
+
+    /**
      * Empties the bank before every test. Workaround, because all tests share the same singleton bank
      */
     @BeforeEach
@@ -30,7 +36,7 @@ public class BankTests {
 
     /**
      * Creates two savings accounts through the bank and checks the ids
-     * @throws InvalidAmountException
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Constructor Test, creates two SavingsAccounts")
@@ -48,8 +54,8 @@ public class BankTests {
 
     /**
      * Deposits on a savings account through the bank
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Simple deposit on Bank-SavingsAccount should work")
@@ -65,8 +71,8 @@ public class BankTests {
 
     /**
      * Withdraws from a savings account through the bank, withdrawing more than the balance throws
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Simple withdraw on Bank-SavingsAccount should work")
@@ -82,8 +88,8 @@ public class BankTests {
 
     /**
      * Experimente mit print().
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
@@ -97,9 +103,9 @@ public class BankTests {
     }
 
     /**
-     * Experimente mit print(year, month).
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * Prints the balance after a deposit and a withdrawal and checks that it is correct
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Not a real Test, it prints the Balance of the account")
@@ -114,6 +120,8 @@ public class BankTests {
 
     /**
      * Testet den Gesamtkontostand der Bank.
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Tests the balance of two SavingsAccounts from the Bank")
@@ -130,6 +138,8 @@ public class BankTests {
 
     /**
      * Tested die Ausgabe der "top 5" konten.
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Tests the List of the top 5 balances")
@@ -149,6 +159,8 @@ public class BankTests {
 
     /**
      * Tested die Ausgabe der "bottom 5" konten.
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Tests the List of the bottom 5 balances")
@@ -168,8 +180,8 @@ public class BankTests {
 
     /**
      * Puts all types of accounts in a list, sums the balances and asserts the total
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("Adds one account of each type into a list, sums the balances and asserts the total")
@@ -194,8 +206,8 @@ public class BankTests {
 
     /**
      * The bank starts empty and a deposit only shows up in this test. Together with testIsolationSecond it checks that the order of the tests doesn't matter
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("A deposit not leaking into another test should work")
@@ -211,8 +223,8 @@ public class BankTests {
 
     /**
      * The bank starts empty and a deposit only shows up in this test. Together with testIsolationFirst it checks that the order of the tests doesn't matter
-     * @throws InvalidDateException
-     * @throws InvalidAmountException
+     * @throws InvalidDateException if a transaction date is in the past
+     * @throws InvalidAmountException if an amount is not allowed
      */
     @Test
     @DisplayName("A deposit from another test not showing up should work")

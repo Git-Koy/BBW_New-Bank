@@ -57,7 +57,16 @@ public class Bank {
      * Holds the only bank. The JVM loads this class the first time getInstance() is called.
      */
     private static class Holder {
+        /**
+         * The only bank, created when the Holder class is loaded
+         */
         static final Bank INSTANCE = new Bank(new AccountFactory());
+
+        /**
+         * Creates a new holder, it is never called because the holder only has a static field
+         */
+        private Holder() {
+        }
     }
 
     /**
@@ -119,6 +128,7 @@ public class Bank {
      *
      * @param creditLimit Kreditlimite (negative Zahl)
      * @return String die neue Kontonummer
+     * @throws IllegalArgumentException when the credit limit is positive
      */
     public String createSalaryAccount(long creditLimit) throws IllegalArgumentException {
         var account = accountFactory.createSalaryAccount(creditLimit);
@@ -254,7 +264,7 @@ public class Bank {
     }
 
     /**
-     * Getter of the property <tt>account</tt>
+     * Getter of the property {@code account}
      *
      * @param id the account id
      * @return Returns the account.

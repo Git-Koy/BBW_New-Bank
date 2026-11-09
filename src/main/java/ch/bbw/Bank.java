@@ -28,7 +28,7 @@ import java.util.TreeMap;
  *     <li>"There is one bank" is a fact about the world, "there is one Bank object in a static field" is a much stronger claim about the code.</li>
  * </ul>
  * Because of that the bank keeps a constructor with the injected AccountFactory, and getInstance() should only be called at the outermost entry point
- * (main, later the Spring configuration). Everything else should get the bank as a parameter.
+ * (main). Everything else should get the bank as a parameter.
  *
  * @author luigicavuoti, lro@gmx.ch
  * @version 2.1

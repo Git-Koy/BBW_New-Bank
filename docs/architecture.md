@@ -79,7 +79,6 @@ danach die Umsetzung (grün). Fertige Branches kommen per Merge in `main`.
 | 4 | Factory | `04-Exercise-factory-pattern` | Cedric Caviezel | richtige Kontotypen, `AccountType`, `create(...)`, thread-sichere Nummern |
 | 5 | Singleton | `05-Exercise-singleton-pattern` | Cedric Caviezel | `getInstance()`, Test-Isolation mit `reset()`, Factory per Konstruktor |
 | – | Dokumentation | `Documentation` | Cedric Caviezel | README, Anwendungsfälle, Klassendiagramm, Architektur, fehlende Tests |
-| 6–11 | Spring-Boot-Backend | – | – | noch offen ([Aufgabe](exercises/10-Exercise-build-the-be.md)) |
 
 ## Tests
 

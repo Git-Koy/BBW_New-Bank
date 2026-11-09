@@ -28,7 +28,7 @@ cd BBW_New-Bank
 
 Unter Windows `mvnw.cmd` statt `./mvnw` verwenden.
 
-Die Anwendung hat noch keine REST-Endpunkte, darum antwortet `http://localhost:8080/` mit `404`.
+Die Anwendung hat keine REST-Endpunkte, darum antwortet `http://localhost:8080/` mit `404`.
 Ob sie läuft, zeigt der Health-Check von Spring Boot Actuator:
 
 ```bash
@@ -102,7 +102,6 @@ Sprints kommen per Merge in `main`.
 | 3 | Kontotypen | `03-Exercise-specific-accounts` | Lohnkonto, Promo-Jugendsparkonto, Vererbung |
 | 4 | Factory Pattern | `04-Exercise-factory-pattern` | richtige Kontotypen, `AccountType`, thread-sichere Nummern |
 | 5 | Singleton Pattern | `05-Exercise-singleton-pattern` | eine Bank, Test-Isolation, Factory per Konstruktor |
-| 6–11 | Spring-Boot-Backend | – | noch offen |
 
 Die Aufgaben stehen in [`docs/exercises/`](docs/exercises/), die Szenarien in
 [`docs/scenarios/`](docs/scenarios/).
@@ -118,7 +117,6 @@ Die Aufgaben stehen in [`docs/exercises/`](docs/exercises/), die Szenarien in
 | Build | Maven Wrapper |
 | Tests | JUnit 5 (`spring-boot-starter-test`) |
 | Monitoring | Spring Boot Actuator, Health-Check unter `/actuator/health` |
-| Datenbank | H2 in-memory (für die Sprints 6–11) |
 
 Die Domänenklassen (`Bank`, `Account`, …) sind bewusst **keine** Spring-Beans, damit das
-objektorientierte Design für sich steht. Die Service-Schicht kommt erst mit Sprint 6.
+objektorientierte Design für sich steht.

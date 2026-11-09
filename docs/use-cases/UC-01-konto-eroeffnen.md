@@ -65,8 +65,8 @@ alle Typen teilen (`S-1000`, `Y-1001`, `P-1002`).
 
 ## Offene Punkte
 
-- Die Kontonummer ist nur so lange eindeutig, wie die Anwendung läuft. Mit einer Datenbank
-  (Sprint 6–11) muss der Zähler gespeichert werden.
+- Die Kontonummer ist nur so lange eindeutig, wie die Anwendung läuft; nach einem Neustart
+  beginnt der Zähler wieder bei 1000.
 
 ## Änderungshistorie
 

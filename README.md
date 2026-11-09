@@ -28,8 +28,7 @@ cd BBW_New-Bank
 
 Unter Windows `mvnw.cmd` statt `./mvnw` verwenden.
 
-Die Anwendung hat keine REST-Endpunkte, darum antwortet `http://localhost:8080/` mit `404`.
-Ob sie läuft, zeigt der Health-Check von Spring Boot Actuator:
+Ob die Anwendung läuft, zeigt der Health-Check von Spring Boot Actuator:
 
 ```bash
 curl http://localhost:8080/actuator/health

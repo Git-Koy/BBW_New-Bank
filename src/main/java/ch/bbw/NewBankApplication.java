@@ -15,9 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Die Annotation {@code @SpringBootApplication} aktiviert das Component-Scanning
  * ab diesem Package ({@code ch.bbw}) sowie die Autokonfiguration. Die
  * Domänenklassen ({@link Bank}, {@link AccountFactory}, …) sind bewusst
- * <em>keine</em> Spring-Beans — sie bleiben reines OO-Design. Der Service-Layer,
- * der sie zu Beans macht, entsteht in Sprint 6 (siehe
- * {@code docs/exercises/10-Exercise-build-the-be.md}).
+ * <em>keine</em> Spring-Beans — sie bleiben reines OO-Design.
  * </p>
  *
  * @author Luigi Cavuoti
